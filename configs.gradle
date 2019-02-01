@@ -1,0 +1,43 @@
+ext {
+
+    //classpath dependency versions
+    gradle_plugin_version = '3.3.0'
+    kotlin_version = '1.3.20'
+
+    //Build Configurations
+    min_sdk_version = 15
+    compile_sdk_version = 28
+    target_sdk_version = 28
+
+    //App Versioning
+    v_major = 1
+    v_minor = 0
+    v_patch = 0
+    version_code = v_major*100 + v_minor*10 + v_patch
+    version_name = "${v_major}.${v_minor}.${v_patch}"
+
+    //Kotlin
+    kotlin_std = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    android_ktx = "androidx.core:core-ktx:1.1.0-alpha04"
+
+    //Android UI
+    appcompat = "androidx.appcompat:appcompat:1.1.0-alpha01"
+    constraintlayout = "androidx.constraintlayout:constraintlayout:1.1.3"
+
+    //Reactive Extensions
+    rxJava = "io.reactivex.rxjava2:rxjava:2.2.6"
+    rxKotlin = "io.reactivex.rxjava2:rxkotlin:2.3.0"
+    rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.0"
+
+    //DI
+    dagger_core = "com.google.dagger:dagger:2.21"
+    dagger_compiler = "com.google.dagger:dagger-compiler:2.21"
+
+    //Android unit and instrumentation testing
+    junit = 'junit:junit:4.12'
+    android_test_runner = 'androidx.test:runner:1.1.2-alpha01'
+    android_espresso = 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
+    android_instrumentation_runner = "androidx.test.runner.AndroidJUnitRunner"
+
+
+}

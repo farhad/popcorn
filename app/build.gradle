@@ -1,34 +1,55 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
+def configs = rootProject.ext
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion configs.compile_sdk_version
+
     defaultConfig {
         applicationId "io.github.farhad.popcorn"
-        minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion configs.min_sdk_version
+        targetSdkVersion configs.target_sdk_version
+        versionCode configs.version_code
+        versionName configs.version_name
+        testInstrumentationRunner configs.android_instrumentation_runner
     }
+
     buildTypes {
-        release {
+
+        debug{
+            debuggable true
             minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+
+        }
+
+        release {
+            minifyEnabled true
+            zipAlignEnabled true
+            debuggable false
+            jniDebuggable false
+            shrinkResources true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
-    implementation 'androidx.core:core-ktx:1.1.0-alpha04'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+
+    //Koltin
+    implementation configs.kotlin_std
+    implementation configs.android_ktx
+
+    //Android UI
+    implementation configs.appcompat
+    implementation configs.constraintlayout
+
+    //Android Unit and Instrumentation Testing
+    testImplementation configs.junit
+    androidTestImplementation configs.android_test_runner
+    androidTestImplementation configs.android_espresso
 }
