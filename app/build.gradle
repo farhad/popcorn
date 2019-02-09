@@ -40,7 +40,7 @@ android {
 
 dependencies {
 
-    //Koltin
+    //Kotlin
     implementation configs.kotlin_std
     implementation configs.android_ktx
 
@@ -48,8 +48,12 @@ dependencies {
     implementation configs.appcompat
     implementation configs.constraintlayout
 
+    //RxJava
+    implementation configs.rxJava
+
     //Android Unit and Instrumentation Testing
     testImplementation configs.junit
+    testImplementation configs.mockito_kotlin
     androidTestImplementation configs.android_test_runner
     androidTestImplementation configs.android_espresso
 }
