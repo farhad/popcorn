@@ -7,7 +7,7 @@ import io.reactivex.Observable
 class GetTrendingMovies constructor(
     transformer: Transformer<List<Movie>>,
     private val movieRepository: MovieRepository
-) : ObservableUsecase<List<Movie>, Nothing>(transformer) {
+) : ObservableUsecase<List<Movie>, Any>(transformer) {
 
-    override fun buildUseCase(params: Nothing?): Observable<List<Movie>> = movieRepository.getTrendingMovies()
+    override fun buildUseCase(params: Any?): Observable<List<Movie>> = movieRepository.getTrendingMovies()
 }
