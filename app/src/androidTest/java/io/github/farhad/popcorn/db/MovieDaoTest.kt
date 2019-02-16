@@ -514,7 +514,7 @@ class MovieDaoTest {
         Truth.assertThat(trendingMovies).isEmpty()
         Truth.assertThat(trendingMovies).isNotNull()
         Truth.assertThat(trendingMovies.size).isEqualTo(0)
-        Truth.assertThat(trendingMovies.count()).isEqualTo(0)
+        Truth.assertThat(movieDao.count()).isEqualTo(0)
     }
 
     @Test
@@ -529,6 +529,6 @@ class MovieDaoTest {
         Truth.assertThat(upcomingMovies).isEmpty()
         Truth.assertThat(upcomingMovies).isNotNull()
         Truth.assertThat(upcomingMovies.size).isEqualTo(0)
-        Truth.assertThat(upcomingMovies.count()).isEqualTo(0)
+        Truth.assertThat(movieDao.count()).isEqualTo(0)
     }
 }
