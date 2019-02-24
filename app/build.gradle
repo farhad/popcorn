@@ -17,14 +17,9 @@ android {
         testInstrumentationRunner configs.android_instrumentation_runner
     }
 
-    android.sourceSets {
-        test {
-            java.srcDirs += "$projectDir/src/shared/java"
-        }
-
-        androidTest {
-            java.srcDirs += "$projectDir/src/shared/java"
-        }
+    sourceSets {
+        test.java.srcDirs += "$projectDir/src/shared/java"
+        androidTest.java.srcDirs += "$projectDir/src/shared/java"
     }
 
     buildTypes {
@@ -51,32 +46,33 @@ android {
 
 dependencies {
 
-    //Kotlin
+    // Kotlin
     implementation configs.kotlin_std
     implementation configs.android_ktx
 
-    //Room
+    // Database
     implementation configs.room_runtime
     kapt configs.room_compiler
 
-    //Networking
+    // Networking
     implementation configs.retrofit
     implementation configs.retrofit_gson_converter
     implementation configs.retrofit_rxjava2_adapter
     implementation configs.okhttp_logging_interceptor
 
-    //Android UI
+    // Android UI
     implementation configs.appcompat
     implementation configs.constraintlayout
 
-    //RxJava
+    // RxJava
     implementation configs.rxJava
 
-    //Android Unit and Instrumentation Testing
+    // Unit Testing
     testImplementation configs.junit
     testImplementation configs.mockito_kotlin
     testImplementation configs.google_truth
 
+    // Instrumentation Testing
     androidTestImplementation configs.okttp_mockserver
     androidTestImplementation configs.google_truth
     androidTestImplementation configs.android_test_runner
