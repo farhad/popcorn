@@ -1,0 +1,409 @@
+{
+  "results": [
+    {
+      "vote_count": 41,
+      "id": 438650,
+      "video": false,
+      "vote_average": 5.6,
+      "title": "Cold Pursuit",
+      "popularity": 214.426,
+      "poster_path": "/hXgmWPd1SuujRZ4QnKLzrj79PAw.jpg",
+      "original_language": "en",
+      "original_title": "Cold Pursuit",
+      "genre_ids": [
+        53,
+        28,
+        18
+      ],
+      "backdrop_path": "/aiM3XxYE2JvW1vJ4AC6cI1RjAoT.jpg",
+      "adult": false,
+      "overview": "Nels Coxman's quiet life comes crashing down when his beloved son dies under mysterious circumstances. His search for the truth soon becomes a quest for revenge as he seeks coldblooded justice against a drug lord and his inner circle.",
+      "release_date": "2019-02-07"
+    },
+    {
+      "vote_count": 537,
+      "id": 166428,
+      "video": false,
+      "vote_average": 8,
+      "title": "How to Train Your Dragon: The Hidden World",
+      "popularity": 150.578,
+      "poster_path": "/ij0xoc13hGhrYIlXGGuPXWTh3vi.jpg",
+      "original_language": "en",
+      "original_title": "How to Train Your Dragon: The Hidden World",
+      "genre_ids": [
+        16,
+        10751,
+        12
+      ],
+      "backdrop_path": "/h3KN24PrOheHVYs9ypuOIdFBEpX.jpg",
+      "adult": false,
+      "overview": "As Hiccup fulfills his dream of creating a peaceful dragon utopia, Toothless’ discovery of an untamed, elusive mate draws the Night Fury away.  When danger mounts at home and Hiccup’s reign as village chief is tested, both dragon and rider must make impossible decisions to save their kind.",
+      "release_date": "2019-01-03"
+    },
+    {
+      "vote_count": 48,
+      "id": 512196,
+      "video": false,
+      "vote_average": 6.4,
+      "title": "Happy Death Day 2U",
+      "popularity": 135.513,
+      "poster_path": "/whtt9F8PFqvEgc4fDSHZPkitFk4.jpg",
+      "original_language": "en",
+      "original_title": "Happy Death Day 2U",
+      "genre_ids": [
+        27,
+        9648,
+        53,
+        878,
+        35
+      ],
+      "backdrop_path": "/7trJGwprMUMKhvSx94lmsq6d985.jpg",
+      "adult": false,
+      "overview": "Tree Gelbman learns that dying over and over again was surprisingly easier than the dangers that lie ahead.",
+      "release_date": "2019-02-13"
+    },
+    {
+      "vote_count": 217,
+      "id": 522681,
+      "video": false,
+      "vote_average": 6,
+      "title": "Escape Room",
+      "popularity": 122.67,
+      "poster_path": "/8yZAx7tlKRZIg7pJfaPhl00yHIQ.jpg",
+      "original_language": "en",
+      "original_title": "Escape Room",
+      "genre_ids": [
+        27,
+        53,
+        28
+      ],
+      "backdrop_path": "/mWLljCmpqlcYQh7uh51BBMwCZwN.jpg",
+      "adult": false,
+      "overview": "Six strangers find themselves in circumstances beyond their control, and must use their wits to survive.",
+      "release_date": "2019-01-03"
+    },
+    {
+      "vote_count": 536,
+      "id": 504172,
+      "video": false,
+      "vote_average": 6.4,
+      "title": "The Mule",
+      "popularity": 95.235,
+      "poster_path": "/t0idiLMalKMj2pLsvqHrOM4LPdQ.jpg",
+      "original_language": "en",
+      "original_title": "The Mule",
+      "genre_ids": [
+        80,
+        18,
+        53
+      ],
+      "backdrop_path": "/wVhrbxbMmFfx05YNlqsQfu1gRS5.jpg",
+      "adult": false,
+      "overview": "A 90 year old horticulturalist and Korean War veteran is caught transporting $3 million worth of cocaine through Illinois for a Mexican drug cartel.",
+      "release_date": "2018-12-14"
+    },
+    {
+      "vote_count": 247,
+      "id": 491472,
+      "video": false,
+      "vote_average": 6.7,
+      "title": "At Eternity's Gate",
+      "popularity": 87.235,
+      "poster_path": "/7rUnZrcSyfwfloeI5aoccztSLSg.jpg",
+      "original_language": "en",
+      "original_title": "At Eternity's Gate",
+      "genre_ids": [
+        18
+      ],
+      "backdrop_path": "/cOUZMd2Cr6uOHcdCDJtWRgVN4aN.jpg",
+      "adult": false,
+      "overview": "Famed but tormented artist Vincent van Gogh spends his final years in Arles, France, painting masterworks of the natural world that surrounds him.",
+      "release_date": "2018-11-15"
+    },
+    {
+      "vote_count": 37,
+      "id": 452832,
+      "video": false,
+      "vote_average": 5,
+      "title": "Serenity",
+      "popularity": 87.195,
+      "poster_path": "/hgWAcic93phg4DOuQ8NrsgQWiqu.jpg",
+      "original_language": "en",
+      "original_title": "Serenity",
+      "genre_ids": [
+        53,
+        18
+      ],
+      "backdrop_path": "/oOROXoQ402tHgK6NowmMUSLffkW.jpg",
+      "adult": false,
+      "overview": "Baker Dill is a fishing boat captain leading tours off a tranquil, tropical enclave called Plymouth Island. His quiet life is shattered, however, when his ex-wife Karen tracks him down with a desperate plea for help.",
+      "release_date": "2019-01-24"
+    },
+    {
+      "vote_count": 171,
+      "id": 457136,
+      "video": false,
+      "vote_average": 6.7,
+      "title": "Mary Queen of Scots",
+      "popularity": 68.814,
+      "poster_path": "/b5RMzLAyq5QW6GtN9sIeAEMLlBI.jpg",
+      "original_language": "en",
+      "original_title": "Mary Queen of Scots",
+      "genre_ids": [
+        18,
+        36
+      ],
+      "backdrop_path": "/vTRNPsgi8vNfuJ75QxTZdHF6oH9.jpg",
+      "adult": false,
+      "overview": "In 1561, Mary Stuart, widow of the King of France, returns to Scotland, reclaims her rightful throne and menaces the future of Queen Elizabeth I as ruler of England, because she has a legitimate claim to the English throne. Betrayals, rebellions, conspiracies and their own life choices imperil both Queens. They experience the bitter cost of power, until their tragic fate is finally fulfilled.",
+      "release_date": "2018-12-21"
+    },
+    {
+      "vote_count": 1058,
+      "id": 490132,
+      "video": false,
+      "vote_average": 8.4,
+      "title": "Green Book",
+      "popularity": 67.951,
+      "poster_path": "/7BsvSuDQuoqhWmU2fL7W2GOcZHU.jpg",
+      "original_language": "en",
+      "original_title": "Green Book",
+      "genre_ids": [
+        18,
+        35
+      ],
+      "backdrop_path": "/78PjwaykLY2QqhMfWRDvmfbC6EV.jpg",
+      "adult": false,
+      "overview": "Tony Lip, a bouncer in 1962, is hired to drive pianist Don Shirley on a tour through the Deep South in the days when African Americans, forced to find alternate accommodations and services due to segregation laws below the Mason-Dixon Line, relied on a guide called The Negro Motorist Green Book.",
+      "release_date": "2018-11-16"
+    },
+    {
+      "vote_count": 383,
+      "id": 503314,
+      "video": false,
+      "vote_average": 7.4,
+      "title": "Dragon Ball Super: Broly",
+      "popularity": 64.314,
+      "poster_path": "/f03YksE4NggUjG75toz4H1YAGRf.jpg",
+      "original_language": "ja",
+      "original_title": "ドラゴンボール超スーパー ブロリー",
+      "genre_ids": [
+        28,
+        16,
+        14,
+        12,
+        35
+      ],
+      "backdrop_path": "/6OTRuxpwUUGbmCX3MKP25dOmo59.jpg",
+      "adult": false,
+      "overview": "Earth is peaceful following the Tournament of Power. Realizing that the universes still hold many more strong people yet to see, Goku spends all his days training to reach even greater heights. Then one day, Goku and Vegeta are faced by a Saiyan called 'Broly' who they've never seen before. The Saiyans were supposed to have been almost completely wiped out in the destruction of Planet Vegeta, so what's this one doing on Earth? This encounter between the three Saiyans who have followed completely different destinies turns into a stupendous battle, with even Frieza (back from Hell) getting caught up in the mix.",
+      "release_date": "2018-12-14"
+    },
+    {
+      "vote_count": 54,
+      "id": 426563,
+      "video": false,
+      "vote_average": 4.2,
+      "title": "Holmes & Watson",
+      "popularity": 61.996,
+      "poster_path": "/gY4ziK7sjmNbsoBnTbhqC3SkGoE.jpg",
+      "original_language": "en",
+      "original_title": "Holmes & Watson",
+      "genre_ids": [
+        9648,
+        12,
+        35,
+        80
+      ],
+      "backdrop_path": "/pikYQjSIHP96Zidprp9ngG8YmYJ.jpg",
+      "adult": false,
+      "overview": "Detective Sherlock Holmes and Dr. John Watson join forces to investigate a murder at Buckingham Palace. They soon learn that they have only four days to solve the case, or the queen will become the next victim.",
+      "release_date": "2018-12-25"
+    },
+    {
+      "vote_count": 483,
+      "id": 429197,
+      "video": false,
+      "vote_average": 7.2,
+      "title": "Vice",
+      "popularity": 61.965,
+      "poster_path": "/e0NZxqQ4B8YZ6kRrZish2DPqtdi.jpg",
+      "original_language": "en",
+      "original_title": "Vice",
+      "genre_ids": [
+        18,
+        36,
+        35
+      ],
+      "backdrop_path": "/uvy89JLcYEiUb0VOoSjkUrIW3nJ.jpg",
+      "adult": false,
+      "overview": "George W. Bush picks Dick Cheney, the CEO of Halliburton Co., to be his Republican running mate in the 2000 presidential election. No stranger to politics, Cheney's impressive résumé includes stints as White House chief of staff, House Minority Whip and defense secretary. When Bush wins by a narrow margin, Cheney begins to use his newfound power to help reshape the country and the world.",
+      "release_date": "2018-12-25"
+    },
+    {
+      "vote_count": 116,
+      "id": 465914,
+      "video": false,
+      "vote_average": 7.3,
+      "title": "If Beale Street Could Talk",
+      "popularity": 45.792,
+      "poster_path": "/qhUIOTSi3kr4290tKrVyeriyvrv.jpg",
+      "original_language": "en",
+      "original_title": "If Beale Street Could Talk",
+      "genre_ids": [
+        18,
+        10749
+      ],
+      "backdrop_path": "/9QKt21sUUrcNmlCkLKDFUaTodCh.jpg",
+      "adult": false,
+      "overview": "After her fiance is falsely imprisoned, a pregnant African-American woman sets out to clear his name and prove his innocence.",
+      "release_date": "2018-11-30"
+    },
+    {
+      "vote_count": 358,
+      "id": 470044,
+      "video": false,
+      "vote_average": 8.1,
+      "title": "The Hate U Give",
+      "popularity": 42.237,
+      "poster_path": "/2icwBom0t5nmOuZI9FVXF3gkMK0.jpg",
+      "original_language": "en",
+      "original_title": "The Hate U Give",
+      "genre_ids": [
+        18,
+        80
+      ],
+      "backdrop_path": "/5AijK8OxcTzuT8z6aEcc3kO96eG.jpg",
+      "adult": false,
+      "overview": "Raised in a poverty-stricken slum, a 16-year-old girl named Starr now attends a suburban prep school. After she witnesses a police officer shoot her unarmed best friend, she's torn between her two very different worlds as she tries to speak her truth.",
+      "release_date": "2018-10-19"
+    },
+    {
+      "vote_count": 0,
+      "id": 299537,
+      "video": false,
+      "vote_average": 0,
+      "title": "Captain Marvel",
+      "popularity": 33.641,
+      "poster_path": "/ql5jol2TmXFiwKgzt1sL4z5HGrD.jpg",
+      "original_language": "en",
+      "original_title": "Captain Marvel",
+      "genre_ids": [
+        28,
+        12,
+        878
+      ],
+      "backdrop_path": "/qOJRRTF9RkYDcpZZAkOv6tsXHuP.jpg",
+      "adult": false,
+      "overview": "The story follows Carol Danvers as she becomes one of the universe’s most powerful heroes when Earth is caught in the middle of a galactic war between two alien races. Set in the 1990s, Captain Marvel is an all-new adventure from a previously unseen period in the history of the Marvel Cinematic Universe.",
+      "release_date": "2019-03-06"
+    },
+    {
+      "vote_count": 356,
+      "id": 398173,
+      "video": false,
+      "vote_average": 7.2,
+      "title": "The House That Jack Built",
+      "popularity": 32.222,
+      "poster_path": "/rHR3Z5QWzODnoI2GeYtEIHiz1R8.jpg",
+      "original_language": "en",
+      "original_title": "The House That Jack Built",
+      "genre_ids": [
+        18,
+        27,
+        80,
+        53
+      ],
+      "backdrop_path": "/regL3STcZA6HSvg4PhfT8jEMx64.jpg",
+      "adult": false,
+      "overview": "Failed architect, engineer and vicious murderer Jack tells Verge the details of some of his most elaborately orchestrated crimes, each of them a towering piece of art that defines his life's work as a serial killer for twelve years.",
+      "release_date": "2018-10-08"
+    },
+    {
+      "vote_count": 7384,
+      "id": 424,
+      "video": false,
+      "vote_average": 8.5,
+      "title": "Schindler's List",
+      "popularity": 31.942,
+      "poster_path": "/yPisjyLweCl1tbgwgtzBCNCBle.jpg",
+      "original_language": "en",
+      "original_title": "Schindler's List",
+      "genre_ids": [
+        18,
+        36,
+        10752
+      ],
+      "backdrop_path": "/cTNYRUTXkBgPH3wP3kmPUB5U6dA.jpg",
+      "adult": false,
+      "overview": "The true story of how businessman Oskar Schindler saved over a thousand Jewish lives from the Nazis while they worked as slaves in his factory during World War II.",
+      "release_date": "1993-12-15"
+    },
+    {
+      "vote_count": 159,
+      "id": 507076,
+      "video": false,
+      "vote_average": 7.3,
+      "title": "Climax",
+      "popularity": 27.836,
+      "poster_path": "/ssYS0Y8grJtYzFAWZIGg6g8ucRR.jpg",
+      "original_language": "fr",
+      "original_title": "Climax",
+      "genre_ids": [
+        18,
+        27,
+        10402,
+        53
+      ],
+      "backdrop_path": "/v0sblc9A8eaE8EqDQ5Y6fELj4oB.jpg",
+      "adult": false,
+      "overview": "Young dancers gather in a remote and empty school building to rehearse on a cold and wintry night. The all-night celebration soon turns into a hallucinatory nightmare when they learn that their sangria is laced with LSD.",
+      "release_date": "2018-09-19"
+    },
+    {
+      "vote_count": 341,
+      "id": 440161,
+      "video": false,
+      "vote_average": 7.1,
+      "title": "The Sisters Brothers",
+      "popularity": 22.957,
+      "poster_path": "/hbUGrEaJgFz9NWh34HHUb4vLjkG.jpg",
+      "original_language": "en",
+      "original_title": "The Sisters Brothers",
+      "genre_ids": [
+        35,
+        18,
+        37
+      ],
+      "backdrop_path": "/2cI0rmMgoZOqP78iQDZwQASkKT3.jpg",
+      "adult": false,
+      "overview": "Oregon, 1851. Hermann Kermit Warm, a chemist and aspiring gold prospector, keeps a profitable secret that the Commodore wants to know, so he sends the Sisters brothers, two notorious assassins, to capture him on his way to California.",
+      "release_date": "2018-09-19"
+    },
+    {
+      "vote_count": 254,
+      "id": 340613,
+      "video": false,
+      "vote_average": 7.2,
+      "title": "The Wife",
+      "popularity": 20.835,
+      "poster_path": "/5zDB2tIYwfMSmNpgARHbDKpPgdg.jpg",
+      "original_language": "en",
+      "original_title": "The Wife",
+      "genre_ids": [
+        18
+      ],
+      "backdrop_path": "/jvLrBlzdlJuDZtLunkCCd0eOXSm.jpg",
+      "adult": false,
+      "overview": "A wife questions her life choices as she travels to Stockholm with her husband, where he is slated to receive the Nobel Prize for Literature.",
+      "release_date": "2018-08-02"
+    }
+  ],
+  "page": 1,
+  "total_results": 187,
+  "dates": {
+    "maximum": "2019-03-10",
+    "minimum": "2019-02-23"
+  },
+  "total_pages": 10
+} 
