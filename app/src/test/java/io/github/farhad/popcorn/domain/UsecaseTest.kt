@@ -5,7 +5,7 @@ import com.nhaarman.mockitokotlin2.mock
 import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.domain.model.Performer
 import io.github.farhad.popcorn.domain.model.Role
-import io.github.farhad.popcorn.domain.repository.MovieRepository
+import io.github.farhad.popcorn.domain.repository.Repository
 import io.github.farhad.popcorn.domain.usecase.GetMovieCast
 import io.github.farhad.popcorn.domain.usecase.GetMovieCrew
 import io.github.farhad.popcorn.domain.usecase.GetTrendingMovies
@@ -22,10 +22,12 @@ class DomainUsecasesTest {
 
     companion object {
         private const val NON_EXISTENT_MOVIE_ID = 404
+        private const val PAGINATION_ID = 1
+        private const val PAGE_SIZE = 2
     }
 
-    private lateinit var repository: MovieRepository
-    private lateinit var emptyRepository: MovieRepository
+    private lateinit var repository: Repository
+    private lateinit var emptyRepository: Repository
 
     private fun initMockedRepository() {
         /**
@@ -67,9 +69,9 @@ class DomainUsecasesTest {
         )
 
         repository = mock()
-        Mockito.`when`(repository.getUpcomingMovies())
+        Mockito.`when`(repository.getUpcomingMovies(PAGINATION_ID, PAGE_SIZE))
             .thenReturn(Observable.just(listOf(upcomingMovieOne, upcomingMovieTwo)))
-        Mockito.`when`(repository.getTrendingMovies())
+        Mockito.`when`(repository.getTrendingMovies(PAGINATION_ID, PAGE_SIZE))
             .thenReturn(Observable.just(listOf(trendingMovieOne, trendingMovieTwo)))
         Mockito.`when`(repository.getMovieCast(upcomingMovieOne.id))
             .thenReturn(Observable.just(listOf(performerOneOfUpcomingMovieOne, performerTwoOfUpcomingMovieOne)))
@@ -83,9 +85,9 @@ class DomainUsecasesTest {
 
     private fun initEmptyMockedRepository() {
         emptyRepository = mock()
-        Mockito.`when`(emptyRepository.getUpcomingMovies())
+        Mockito.`when`(emptyRepository.getUpcomingMovies(any(), any()))
             .thenReturn(Observable.just(listOf()))
-        Mockito.`when`(emptyRepository.getTrendingMovies())
+        Mockito.`when`(emptyRepository.getTrendingMovies(any(), any()))
             .thenReturn(Observable.just(listOf()))
         Mockito.`when`(emptyRepository.getMovieCast(any()))
             .thenReturn(Observable.just(listOf()))
@@ -106,13 +108,28 @@ class DomainUsecasesTest {
     }
 
     @Test
+    fun getUpcomingMovies_usecase_throws_exception_when_pagination_parameters_are_null() {
+        // Arrange
+        val transformer = RelayTransformer<List<Movie>>()
+        val usecase = GetUpcomingMovies(transformer, repository)
+
+        // Act
+        val subscription = usecase.execute(null).test()
+
+        // Assert
+        subscription.assertError { it is IllegalArgumentException }
+            .assertError { it.message == "paginationId and pageSize cannot be null!" }
+    }
+
+    @Test
     fun getUpcomingMovies_usecase_returns_upcoming_movies() {
         // Arrange
         val transformer = RelayTransformer<List<Movie>>()
         val usecase = GetUpcomingMovies(transformer, repository)
 
         // Act
-        val subscription = usecase.execute().test()
+        val params = GetUpcomingMovies.Params.forBatch(PAGINATION_ID, PAGE_SIZE)
+        val subscription = usecase.execute(params).test()
 
         // Assert
         subscription.assertValue { movieList -> movieList.isNotEmpty() }
@@ -129,11 +146,26 @@ class DomainUsecasesTest {
         val usecase = GetUpcomingMovies(transformer, emptyRepository)
 
         // Act
-        val subscription = usecase.execute().test()
+        val params = GetUpcomingMovies.Params.forBatch(PAGINATION_ID, PAGE_SIZE)
+        val subscription = usecase.execute(params).test()
 
         // Assert
         subscription.assertValue { movieList -> movieList.isEmpty() }
             .assertComplete()
+    }
+
+    @Test
+    fun getTrendingMovies_usecase_throws_exception_when_pagination_parameters_are_null() {
+        // Arrange
+        val transformer = RelayTransformer<List<Movie>>()
+        val usecase = GetTrendingMovies(transformer, repository)
+
+        // Act
+        val subscription = usecase.execute(null).test()
+
+        // Assert
+        subscription.assertError { it is IllegalArgumentException }
+            .assertError { it.message == "paginationId and pageSize cannot be null!" }
     }
 
     @Test
@@ -143,7 +175,8 @@ class DomainUsecasesTest {
         val usecase = GetTrendingMovies(transformer, repository)
 
         // Act
-        val subscription = usecase.execute().test()
+        val params = GetTrendingMovies.Params.forBatch(PAGINATION_ID, PAGE_SIZE)
+        val subscription = usecase.execute(params).test()
 
         // Assert
         subscription.assertValue { movieList -> movieList.isNotEmpty() }
@@ -160,7 +193,8 @@ class DomainUsecasesTest {
         val usecase = GetTrendingMovies(transformer, emptyRepository)
 
         // Act
-        val subscription = usecase.execute().test()
+        val params = GetTrendingMovies.Params.forBatch(PAGINATION_ID, PAGE_SIZE)
+        val subscription = usecase.execute(params).test()
 
         // Assert
         subscription.assertValue { movieList -> movieList.isEmpty() }
