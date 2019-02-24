@@ -2,7 +2,6 @@ package io.github.farhad.popcorn.domain
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
-import com.yossisegev.domain.common.RelayTransformer
 import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.domain.model.Performer
 import io.github.farhad.popcorn.domain.model.Role
@@ -11,6 +10,7 @@ import io.github.farhad.popcorn.domain.usecase.GetMovieCast
 import io.github.farhad.popcorn.domain.usecase.GetMovieCrew
 import io.github.farhad.popcorn.domain.usecase.GetTrendingMovies
 import io.github.farhad.popcorn.domain.usecase.GetUpcomingMovies
+import io.github.farhad.popcorn.fixture.RelayTransformer
 import io.github.farhad.popcorn.fixture.create
 import io.reactivex.Observable
 import org.junit.After
@@ -100,7 +100,7 @@ class DomainUsecasesTest {
     }
 
     @After
-    fun tearDown(){
+    fun tearDown() {
         Mockito.reset(repository)
         Mockito.reset(emptyRepository)
     }

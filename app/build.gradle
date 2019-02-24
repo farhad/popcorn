@@ -17,9 +17,19 @@ android {
         testInstrumentationRunner configs.android_instrumentation_runner
     }
 
+    android.sourceSets {
+        test {
+            java.srcDirs += "$projectDir/src/shared/java"
+        }
+
+        androidTest {
+            java.srcDirs += "$projectDir/src/shared/java"
+        }
+    }
+
     buildTypes {
 
-        debug{
+        debug {
             debuggable true
             minifyEnabled false
             zipAlignEnabled false
@@ -52,6 +62,8 @@ dependencies {
     //Networking
     implementation configs.retrofit
     implementation configs.retrofit_gson_converter
+    implementation configs.retrofit_rxjava2_adapter
+    implementation configs.okhttp_logging_interceptor
 
     //Android UI
     implementation configs.appcompat
@@ -64,6 +76,8 @@ dependencies {
     testImplementation configs.junit
     testImplementation configs.mockito_kotlin
     testImplementation configs.google_truth
+
+    androidTestImplementation configs.okttp_mockserver
     androidTestImplementation configs.google_truth
     androidTestImplementation configs.android_test_runner
     androidTestImplementation configs.android_junit_extentions

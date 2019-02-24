@@ -1,4 +1,4 @@
-package com.yossisegev.domain.common
+package io.github.farhad.popcorn.fixture
 
 import io.github.farhad.popcorn.domain.usecase.Transformer
 import io.reactivex.Observable
