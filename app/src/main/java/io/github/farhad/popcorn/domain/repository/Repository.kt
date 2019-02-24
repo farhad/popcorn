@@ -16,9 +16,9 @@ import io.reactivex.Observable
  */
 interface Repository {
 
-    fun getUpcomingMovies(paginationId: Int, pageSize: Int): Observable<List<Movie>>
+    fun getUpcomingMovies(paginationId: Any, pageSize: Int): Observable<List<Movie>>
 
-    fun getTrendingMovies(paginationId: Int, pageSize: Int): Observable<List<Movie>>
+    fun getTrendingMovies(paginationId: Any, pageSize: Int): Observable<List<Movie>>
 
     fun getMovieCast(movieId: Int): Observable<List<Performer>>
 
