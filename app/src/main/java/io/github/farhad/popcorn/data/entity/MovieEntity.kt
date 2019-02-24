@@ -4,6 +4,7 @@ import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 @Entity(tableName = "Movies")
 data class MovieEntity(
@@ -21,7 +22,7 @@ data class MovieEntity(
     val overview: String?,
 
     @SerializedName("release_date")
-    val releaseDate: Long?,
+    val releaseDate: Date?,
 
     @SerializedName("poster_path")
     val posterUrl: String?,
