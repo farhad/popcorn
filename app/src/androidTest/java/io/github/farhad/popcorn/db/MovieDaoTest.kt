@@ -238,7 +238,7 @@ class MovieDaoTest {
     }
 
     @Test
-    fun movieDao_delete_by_movieId_deletes_single_movie_row_from_movies_table(){
+    fun movieDao_delete_by_movieId_deletes_single_movie_row_from_movies_table() {
         // Arrange
         val upcomingMovieOne = MovieEntity.create(
             id = 1,
@@ -250,7 +250,7 @@ class MovieDaoTest {
             title = "trending movie 1",
             category = Category.TRENDING
         )
-        movieDao.insert(listOf(upcomingMovieOne,trendingMovieOne))
+        movieDao.insert(listOf(upcomingMovieOne, trendingMovieOne))
 
         // Act
         movieDao.delete(upcomingMovieOne.id)
@@ -262,7 +262,7 @@ class MovieDaoTest {
     }
 
     @Test
-    fun movieDao_delete_by_movieId_does_not_delete_any_rows_when_movieId_is_nonExistent(){
+    fun movieDao_delete_by_movieId_does_not_delete_any_rows_when_movieId_is_nonExistent() {
         // Arrange
         val upcomingMovieOne = MovieEntity.create(
             id = 1,
@@ -274,7 +274,7 @@ class MovieDaoTest {
             title = "trending movie 1",
             category = Category.TRENDING
         )
-        movieDao.insert(listOf(upcomingMovieOne,trendingMovieOne))
+        movieDao.insert(listOf(upcomingMovieOne, trendingMovieOne))
 
         // Act
         movieDao.delete(NON_EXISTENT_MOVIE_ID)
@@ -303,7 +303,7 @@ class MovieDaoTest {
         movieDao.insert(listOf(trendingMovieOne, trendingMovieTwo))
 
         // Act
-        movieDao.delete(listOf(trendingMovieOne,trendingMovieTwo))
+        movieDao.delete(listOf(trendingMovieOne, trendingMovieTwo))
 
         // Assert
         Truth.assertThat(movieDao.getTrendingMovies().size).isEqualTo(0)
@@ -419,7 +419,7 @@ class MovieDaoTest {
     }
 
     @Test
-    fun movieDao_getTrendingMovies_returns_all_rows_where_category_equalsTo_trending(){
+    fun movieDao_getTrendingMovies_returns_all_rows_where_category_equalsTo_trending() {
         // Arrange
         val trendingMovieOne = MovieEntity.create(
             id = 1,
