@@ -13,12 +13,15 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.threeten.bp.Instant
 
 @RunWith(AndroidJUnit4::class)
 class MovieDaoTest {
 
     companion object {
         const val NON_EXISTENT_MOVIE_ID = 404
+        const val PAGE_SIZE = 2
+        val UPDATED_AFTER: Instant = Instant.now()
     }
 
     private lateinit var movieDatabase: MovieDatabase
@@ -64,7 +67,7 @@ class MovieDaoTest {
 
         // Act
         movieDao.insert(trendingMovieOne)
-        val trendingMovies = movieDao.getTrendingMovies()
+        val trendingMovies = movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(trendingMovies.size).isEqualTo(1)
@@ -85,7 +88,7 @@ class MovieDaoTest {
 
         // Act
         movieDao.insert(upcomingMovieOne)
-        val upcomingMovies = movieDao.getUpcomingMovies()
+        val upcomingMovies = movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(upcomingMovies.size).isEqualTo(1)
@@ -112,7 +115,7 @@ class MovieDaoTest {
 
         // Act
         movieDao.insert(listOf(trendingMovieOne, trendingMovieTwo))
-        val trendingMovies = movieDao.getTrendingMovies()
+        val trendingMovies = movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(trendingMovies.size).isEqualTo(2)
@@ -142,7 +145,7 @@ class MovieDaoTest {
 
         // Act
         movieDao.insert(listOf(upcomingMovie1, upcomingMovie2))
-        val upcomingMovies = movieDao.getUpcomingMovies()
+        val upcomingMovies = movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(upcomingMovies.size).isEqualTo(2)
@@ -168,7 +171,7 @@ class MovieDaoTest {
         // Act
         val updatedTrendingMovieOne = trendingMovieOne.copy(title = "updated trending movie 1")
         movieDao.update(updatedTrendingMovieOne)
-        val trendingMovies = movieDao.getTrendingMovies()
+        val trendingMovies = movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(trendingMovies.size).isEqualTo(1)
@@ -191,7 +194,7 @@ class MovieDaoTest {
         // Act
         val updatedUpcomingMovieOne = upcomingMovieOne.copy(title = "updated upcoming movie 1")
         movieDao.update(updatedUpcomingMovieOne)
-        val upcomingMovies = movieDao.getUpcomingMovies()
+        val upcomingMovies = movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(upcomingMovies.size).isEqualTo(1)
@@ -215,7 +218,7 @@ class MovieDaoTest {
         movieDao.delete(trendingMovieOne)
 
         // Assert
-        Truth.assertThat(movieDao.getTrendingMovies().size).isEqualTo(0)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(0)
         Truth.assertThat(movieDao.count()).isEqualTo(0)
     }
 
@@ -233,12 +236,12 @@ class MovieDaoTest {
         movieDao.delete(upcomingMovieOne)
 
         // Assert
-        Truth.assertThat(movieDao.getUpcomingMovies().size).isEqualTo(0)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(0)
         Truth.assertThat(movieDao.count()).isEqualTo(0)
     }
 
     @Test
-    fun movieDao_delete_by_movieId_deletes_single_movie_row_from_movies_table() {
+    fun movieDao_delete_by_id_deletes_single_movie_row_from_movies_table() {
         // Arrange
         val upcomingMovieOne = MovieEntity.create(
             id = 1,
@@ -256,13 +259,13 @@ class MovieDaoTest {
         movieDao.delete(upcomingMovieOne.id)
 
         // Assert
-        Truth.assertThat(movieDao.getUpcomingMovies().size).isEqualTo(0)
-        Truth.assertThat(movieDao.getTrendingMovies().size).isEqualTo(1)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(0)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(1)
         Truth.assertThat(movieDao.count()).isEqualTo(1)
     }
 
     @Test
-    fun movieDao_delete_by_movieId_does_not_delete_any_rows_when_movieId_is_nonExistent() {
+    fun movieDao_delete_by_id_does_not_delete_any_rows_when_id_is_nonExistent() {
         // Arrange
         val upcomingMovieOne = MovieEntity.create(
             id = 1,
@@ -280,8 +283,8 @@ class MovieDaoTest {
         movieDao.delete(NON_EXISTENT_MOVIE_ID)
 
         // Assert
-        Truth.assertThat(movieDao.getUpcomingMovies().size).isEqualTo(1)
-        Truth.assertThat(movieDao.getTrendingMovies().size).isEqualTo(1)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(1)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(1)
         Truth.assertThat(movieDao.count()).isEqualTo(2)
     }
 
@@ -306,7 +309,7 @@ class MovieDaoTest {
         movieDao.delete(listOf(trendingMovieOne, trendingMovieTwo))
 
         // Assert
-        Truth.assertThat(movieDao.getTrendingMovies().size).isEqualTo(0)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(0)
         Truth.assertThat(movieDao.count()).isEqualTo(0)
     }
 
@@ -330,7 +333,7 @@ class MovieDaoTest {
         movieDao.delete(listOf(upcomingMovieOne, upcomingMovieTwo))
 
         // Assert
-        Truth.assertThat(movieDao.getUpcomingMovies().size).isEqualTo(0)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(0)
         Truth.assertThat(movieDao.count()).isEqualTo(0)
     }
 
@@ -349,10 +352,11 @@ class MovieDaoTest {
         movieDao.upsert(updatedTrendingMovieOne)
 
         // Assert
-        Truth.assertThat(movieDao.getTrendingMovies().size).isEqualTo(1)
-        Truth.assertThat(movieDao.getTrendingMovies()[0].id).isEqualTo(1)
-        Truth.assertThat(movieDao.getTrendingMovies()[0].title).isEqualTo(updatedTrendingMovieOne.title)
-        Truth.assertThat(movieDao.getTrendingMovies()[0].category).isEqualTo(Category.TRENDING)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(1)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)[0].id).isEqualTo(1)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)[0].title)
+            .isEqualTo(updatedTrendingMovieOne.title)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)[0].category).isEqualTo(Category.TRENDING)
         Truth.assertThat(movieDao.count()).isEqualTo(1)
     }
 
@@ -371,10 +375,11 @@ class MovieDaoTest {
         movieDao.upsert(updatedUpcomingMovieOne)
 
         // Assert
-        Truth.assertThat(movieDao.getUpcomingMovies().size).isEqualTo(1)
-        Truth.assertThat(movieDao.getUpcomingMovies()[0].id).isEqualTo(1)
-        Truth.assertThat(movieDao.getUpcomingMovies()[0].title).isEqualTo(updatedUpcomingMovieOne.title)
-        Truth.assertThat(movieDao.getUpcomingMovies()[0].category).isEqualTo(Category.UPCOMING)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(1)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)[0].id).isEqualTo(1)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)[0].title)
+            .isEqualTo(updatedUpcomingMovieOne.title)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)[0].category).isEqualTo(Category.UPCOMING)
         Truth.assertThat(movieDao.count()).isEqualTo(1)
     }
 
@@ -391,10 +396,10 @@ class MovieDaoTest {
         movieDao.upsert(trendingMovieOne)
 
         // Assert
-        Truth.assertThat(movieDao.getTrendingMovies().size).isEqualTo(1)
-        Truth.assertThat(movieDao.getTrendingMovies()[0].id).isEqualTo(1)
-        Truth.assertThat(movieDao.getTrendingMovies()[0].title).isEqualTo("trending movie 1")
-        Truth.assertThat(movieDao.getTrendingMovies()[0].category).isEqualTo(Category.TRENDING)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(1)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)[0].id).isEqualTo(1)
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)[0].title).isEqualTo("trending movie 1")
+        Truth.assertThat(movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)[0].category).isEqualTo(Category.TRENDING)
         Truth.assertThat(movieDao.count()).isEqualTo(1)
     }
 
@@ -411,10 +416,10 @@ class MovieDaoTest {
         movieDao.upsert(upcomingMovieOne)
 
         // Assert
-        Truth.assertThat(movieDao.getUpcomingMovies().size).isEqualTo(1)
-        Truth.assertThat(movieDao.getUpcomingMovies()[0].id).isEqualTo(1)
-        Truth.assertThat(movieDao.getUpcomingMovies()[0].title).isEqualTo("upcoming movie 1")
-        Truth.assertThat(movieDao.getUpcomingMovies()[0].category).isEqualTo(Category.UPCOMING)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE).size).isEqualTo(1)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)[0].id).isEqualTo(1)
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)[0].title).isEqualTo("upcoming movie 1")
+        Truth.assertThat(movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)[0].category).isEqualTo(Category.UPCOMING)
         Truth.assertThat(movieDao.count()).isEqualTo(1)
     }
 
@@ -442,7 +447,7 @@ class MovieDaoTest {
         movieDao.insert(listOf(trendingMovieOne, trendingMovieTwo, upcomingMovieOne))
 
         // Act
-        val trendingMovies = movieDao.getTrendingMovies()
+        val trendingMovies = movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(movieDao.count()).isEqualTo(3)
@@ -484,7 +489,7 @@ class MovieDaoTest {
         movieDao.insert(listOf(trendingMovieOne, upcomingMovieOne, upcomingMovieTwo))
 
         // Act
-        val upcomingMovies = movieDao.getUpcomingMovies()
+        val upcomingMovies = movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(movieDao.count()).isEqualTo(3)
@@ -508,7 +513,7 @@ class MovieDaoTest {
         /**No more arrangement than [setUp] is needed here */
 
         // Act
-        val trendingMovies = movieDao.getTrendingMovies()
+        val trendingMovies = movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(trendingMovies).isEmpty()
@@ -523,7 +528,7 @@ class MovieDaoTest {
         /**No more arrangement than [setUp] is needed here */
 
         // Act
-        val upcomingMovies = movieDao.getUpcomingMovies()
+        val upcomingMovies = movieDao.getUpcomingMovies(UPDATED_AFTER, PAGE_SIZE)
 
         // Assert
         Truth.assertThat(upcomingMovies).isEmpty()

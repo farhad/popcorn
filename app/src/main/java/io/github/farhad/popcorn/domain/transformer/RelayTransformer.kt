@@ -1,6 +1,5 @@
-package io.github.farhad.popcorn.fixture
+package io.github.farhad.popcorn.domain.transformer
 
-import io.github.farhad.popcorn.domain.transformer.Transformer
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 

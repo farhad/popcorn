@@ -1,4 +1,4 @@
-package io.github.farhad.popcorn.domain.usecase
+package io.github.farhad.popcorn.domain.transformer
 
 import io.reactivex.ObservableTransformer
 

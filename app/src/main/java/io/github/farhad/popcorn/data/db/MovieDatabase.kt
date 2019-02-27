@@ -22,7 +22,7 @@ abstract class MovieDatabase : RoomDatabase() {
 
     companion object Factory {
         fun create(context: Context): MovieDatabase {
-            return Room.databaseBuilder(context, MovieDatabase::class.java, "app_database.db").build()
+            return Room.databaseBuilder(context, MovieDatabase::class.java, "movies_database.db").build()
         }
     }
 }

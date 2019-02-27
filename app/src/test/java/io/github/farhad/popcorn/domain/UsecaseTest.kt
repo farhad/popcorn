@@ -119,6 +119,7 @@ class DomainUsecasesTest {
         // Assert
         subscription.assertError { it is IllegalArgumentException }
             .assertError { it.message == "paginationId and pageSize cannot be null!" }
+            .assertNotComplete()
     }
 
     @Test
@@ -137,6 +138,7 @@ class DomainUsecasesTest {
             .assertValue { movieList -> movieList[0].id == 1 && movieList[0].title == "upcoming movie 1" }
             .assertValue { movieList -> movieList[1].id == 2 && movieList[1].title == "upcoming movie 2" }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -152,6 +154,7 @@ class DomainUsecasesTest {
         // Assert
         subscription.assertValue { movieList -> movieList.isEmpty() }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -166,6 +169,7 @@ class DomainUsecasesTest {
         // Assert
         subscription.assertError { it is IllegalArgumentException }
             .assertError { it.message == "paginationId and pageSize cannot be null!" }
+            .assertNotComplete()
     }
 
     @Test
@@ -184,6 +188,7 @@ class DomainUsecasesTest {
             .assertValue { movieList -> movieList[0].id == 3 && movieList[0].title == "trending movie 1" }
             .assertValue { movieList -> movieList[1].id == 4 && movieList[1].title == "trending movie 2" }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -199,6 +204,7 @@ class DomainUsecasesTest {
         // Assert
         subscription.assertValue { movieList -> movieList.isEmpty() }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -217,6 +223,7 @@ class DomainUsecasesTest {
             .assertValue { performerList -> performerList[0].id == "5" && performerList[0].name == "performer 1 of upcoming movie 1" }
             .assertValue { performerList -> performerList[1].id == "6" && performerList[1].name == "performer 2 of upcoming movie 1" }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -232,6 +239,7 @@ class DomainUsecasesTest {
         // Assert
         subscription.assertValue { performerList -> performerList.isEmpty() }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -246,6 +254,7 @@ class DomainUsecasesTest {
         // Assert
         subscription.assertError { it is IllegalArgumentException }
             .assertError { it.message == "movieId parameter cannot be null!" }
+            .assertNotComplete()
     }
 
     @Test
@@ -263,6 +272,7 @@ class DomainUsecasesTest {
             .assertValue { roleList -> roleList.size == 1 }
             .assertValue { roleList -> roleList[0].id == "7" && roleList[0].name == "role 1 of trending movie 1" }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -278,6 +288,7 @@ class DomainUsecasesTest {
         // Assert
         subscription.assertValue { roleList -> roleList.isEmpty() }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -292,5 +303,6 @@ class DomainUsecasesTest {
         // Assert
         subscription.assertError { it is IllegalArgumentException }
             .assertError { it.message == "movieId parameter cannot be null!" }
+            .assertNotComplete()
     }
 }

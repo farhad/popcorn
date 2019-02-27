@@ -1,5 +1,6 @@
 package io.github.farhad.popcorn.domain.usecase
 
+import io.github.farhad.popcorn.domain.transformer.Transformer
 import io.reactivex.Observable
 
 /**

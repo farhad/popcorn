@@ -2,6 +2,7 @@ package io.github.farhad.popcorn.data.db.converter
 
 import androidx.room.TypeConverter
 import io.github.farhad.popcorn.data.entity.Category
+import org.threeten.bp.Instant
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,4 +33,10 @@ class Converters {
 
         return null
     }
+
+    @TypeConverter
+    fun instantToLong(instant: Instant): Long = instant.toEpochMilli()
+
+    @TypeConverter
+    fun longToInstant(long: Long): Instant? = Instant.ofEpochMilli(long)
 }
