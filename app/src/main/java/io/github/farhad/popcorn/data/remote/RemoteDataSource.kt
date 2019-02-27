@@ -1,15 +1,16 @@
-package io.github.farhad.popcorn.data.remote.api
+package io.github.farhad.popcorn.data.remote
 
 import io.github.farhad.popcorn.data.entity.MovieEntity
 import io.github.farhad.popcorn.data.entity.PerformerEntity
 import io.github.farhad.popcorn.data.entity.RoleEntity
-import io.github.farhad.popcorn.domain.usecase.Transformer
+import io.github.farhad.popcorn.data.remote.api.ApiService
+import io.github.farhad.popcorn.domain.transformer.Transformer
 import io.reactivex.Observable
 
 /**
  * [apiService] should be injected here
  */
-class ApiFactory constructor(private val apiService: ApiService) {
+class RemoteDataSource constructor(private val apiService: ApiService) {
 
     fun getUpcomingMovies(page: Int = 1, transformer: Transformer<List<MovieEntity>?>): Observable<List<MovieEntity>?> {
         return apiService.getUpcomingMovies(page)

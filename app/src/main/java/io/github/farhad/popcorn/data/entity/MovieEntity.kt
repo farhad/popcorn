@@ -4,6 +4,7 @@ import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import org.threeten.bp.Instant
 import java.util.*
 
 @Entity(tableName = "Movies")
@@ -36,7 +37,9 @@ data class MovieEntity(
     @SerializedName("adult")
     val isAdult: Boolean,
 
-    val category: Category
+    val category: Category,
+
+    val updatedAt: Instant
 ) {
     companion object {
         /**

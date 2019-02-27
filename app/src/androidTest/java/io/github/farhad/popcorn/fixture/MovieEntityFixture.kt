@@ -2,6 +2,7 @@ package io.github.farhad.popcorn.fixture
 
 import io.github.farhad.popcorn.data.entity.Category
 import io.github.farhad.popcorn.data.entity.MovieEntity
+import org.threeten.bp.Instant
 import java.util.*
 
 /**
@@ -16,7 +17,8 @@ fun MovieEntity.Companion.create(
     voteAverage: Float? = null,
     voteCount: Int? = null,
     isAdult: Boolean = false,
-    category: Category
+    category: Category,
+    updatedAt: Instant = Instant.now()
 ): MovieEntity {
 
     return MovieEntity(
@@ -28,6 +30,7 @@ fun MovieEntity.Companion.create(
         voteAverage,
         voteCount,
         isAdult,
-        category
+        category,
+        updatedAt
     )
 }

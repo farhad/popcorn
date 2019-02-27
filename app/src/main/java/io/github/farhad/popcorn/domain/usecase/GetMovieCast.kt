@@ -2,6 +2,7 @@ package io.github.farhad.popcorn.domain.usecase
 
 import io.github.farhad.popcorn.domain.model.Performer
 import io.github.farhad.popcorn.domain.repository.Repository
+import io.github.farhad.popcorn.domain.transformer.Transformer
 import io.reactivex.Observable
 
 class GetMovieCast constructor(
