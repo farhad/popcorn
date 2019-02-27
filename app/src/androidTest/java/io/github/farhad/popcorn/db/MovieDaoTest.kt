@@ -83,7 +83,8 @@ class MovieDaoTest {
         val upcomingMovieOne = MovieEntity.create(
             id = 1,
             title = "upcoming movie 1",
-            category = Category.UPCOMING
+            category = Category.UPCOMING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
 
         // Act
@@ -134,13 +135,15 @@ class MovieDaoTest {
         val upcomingMovie1 = MovieEntity.create(
             id = 1,
             title = "upcoming movie 1",
-            category = Category.UPCOMING
+            category = Category.UPCOMING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
 
         val upcomingMovie2 = MovieEntity.create(
             id = 2,
             title = "upcoming movie 2",
-            category = Category.UPCOMING
+            category = Category.UPCOMING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
 
         // Act
@@ -187,7 +190,8 @@ class MovieDaoTest {
         val upcomingMovieOne = MovieEntity.create(
             id = 1,
             title = "upcoming movie 1",
-            category = Category.UPCOMING
+            category = Category.UPCOMING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
         movieDao.insert(upcomingMovieOne)
 
@@ -270,12 +274,14 @@ class MovieDaoTest {
         val upcomingMovieOne = MovieEntity.create(
             id = 1,
             title = "upcoming movie 1",
-            category = Category.UPCOMING
+            category = Category.UPCOMING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
         val trendingMovieOne = MovieEntity.create(
             id = 2,
             title = "trending movie 1",
-            category = Category.TRENDING
+            category = Category.TRENDING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
         movieDao.insert(listOf(upcomingMovieOne, trendingMovieOne))
 
@@ -366,7 +372,8 @@ class MovieDaoTest {
         val upcomingMovieOne = MovieEntity.create(
             id = 1,
             title = "upcoming movie 1",
-            category = Category.UPCOMING
+            category = Category.UPCOMING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
         movieDao.insert(upcomingMovieOne)
 
@@ -409,7 +416,8 @@ class MovieDaoTest {
         val upcomingMovieOne = MovieEntity.create(
             id = 1,
             title = "upcoming movie 1",
-            category = Category.UPCOMING
+            category = Category.UPCOMING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
 
         // Act
@@ -471,19 +479,22 @@ class MovieDaoTest {
         val trendingMovieOne = MovieEntity.create(
             id = 1,
             title = "trending movie 1",
-            category = Category.TRENDING
+            category = Category.TRENDING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
 
         val upcomingMovieOne = MovieEntity.create(
             id = 2,
             title = "upcoming movie 1",
-            category = Category.UPCOMING
+            category = Category.UPCOMING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
 
         val upcomingMovieTwo = MovieEntity.create(
             id = 3,
             title = "upcoming movie 2",
-            category = Category.UPCOMING
+            category = Category.UPCOMING,
+            updatedAt = UPDATED_AFTER.plusMillis(10)
         )
 
         movieDao.insert(listOf(trendingMovieOne, upcomingMovieOne, upcomingMovieTwo))
@@ -535,5 +546,136 @@ class MovieDaoTest {
         Truth.assertThat(upcomingMovies).isNotNull()
         Truth.assertThat(upcomingMovies.size).isEqualTo(0)
         Truth.assertThat(movieDao.count()).isEqualTo(0)
+    }
+
+    @Test
+    fun movieDao_getTrendingMovies_updatedAt_filter_returns_items_after_specified_time() {
+        // Arrange
+        val past = UPDATED_AFTER.minusMillis(10)
+        val next = UPDATED_AFTER.plusMillis(10)
+
+        val trendingMovieOne = MovieEntity.create(
+            id = 1,
+            title = "trending movie 1",
+            category = Category.TRENDING,
+            updatedAt = past
+        )
+
+        val trendingMovieTwo = MovieEntity.create(
+            id = 2,
+            title = "trending movie 2",
+            category = Category.TRENDING,
+            updatedAt = UPDATED_AFTER
+        )
+
+        val trendingMovieThree = MovieEntity.create(
+            id = 3,
+            title = "trending movie 3",
+            category = Category.TRENDING,
+            updatedAt = next
+        )
+
+        movieDao.insert(listOf(trendingMovieOne, trendingMovieTwo, trendingMovieThree))
+
+        // Act
+        val trendingMovies = movieDao.getTrendingMovies(UPDATED_AFTER, PAGE_SIZE)
+
+        // Assert
+        Truth.assertThat(movieDao.count()).isEqualTo(3)
+
+        Truth.assertThat(trendingMovies).isNotNull()
+        Truth.assertThat(trendingMovies).isNotEmpty()
+        Truth.assertThat(trendingMovies.size).isEqualTo(1)
+
+        Truth.assertThat(trendingMovies[0].id).isEqualTo(3)
+        Truth.assertThat(trendingMovies[0].title).isEqualTo("trending movie 3")
+        Truth.assertThat(trendingMovies[0].category).isEqualTo(Category.TRENDING)
+        Truth.assertThat(trendingMovies[0].updatedAt).isGreaterThan(UPDATED_AFTER)
+    }
+
+    @Test
+    fun movieDao_getTrendingMovies_updatedAt_filter_returns_items_after_specified_time_sorted_ascendingly() {
+        // Arrange
+        val past = UPDATED_AFTER.minusMillis(10)
+        val next = UPDATED_AFTER.plusMillis(10)
+
+        val trendingMovieOne = MovieEntity.create(
+            id = 1,
+            title = "trending movie 1",
+            category = Category.TRENDING,
+            updatedAt = past
+        )
+
+        val trendingMovieTwo = MovieEntity.create(
+            id = 2,
+            title = "trending movie 2",
+            category = Category.TRENDING,
+            updatedAt = UPDATED_AFTER
+        )
+
+        val trendingMovieThree = MovieEntity.create(
+            id = 3,
+            title = "trending movie 3",
+            category = Category.TRENDING,
+            updatedAt = next
+        )
+
+        movieDao.insert(listOf(trendingMovieOne, trendingMovieTwo, trendingMovieThree))
+
+        // Act
+        val trendingMovies = movieDao.getTrendingMovies(past, PAGE_SIZE)
+
+        // Assert
+        Truth.assertThat(movieDao.count()).isEqualTo(3)
+
+        Truth.assertThat(trendingMovies).isNotNull()
+        Truth.assertThat(trendingMovies).isNotEmpty()
+        Truth.assertThat(trendingMovies.size).isEqualTo(2)
+
+        Truth.assertThat(trendingMovies[0].id).isEqualTo(2)
+        Truth.assertThat(trendingMovies[0].title).isEqualTo("trending movie 2")
+        Truth.assertThat(trendingMovies[0].category).isEqualTo(Category.TRENDING)
+        Truth.assertThat(trendingMovies[0].updatedAt).isGreaterThan(past)
+
+        Truth.assertThat(trendingMovies[1].id).isEqualTo(3)
+        Truth.assertThat(trendingMovies[1].title).isEqualTo("trending movie 3")
+        Truth.assertThat(trendingMovies[1].category).isEqualTo(Category.TRENDING)
+        Truth.assertThat(trendingMovies[1].updatedAt).isGreaterThan(past)
+
+        Truth.assertThat(trendingMovies[0].updatedAt).isLessThan(trendingMovies[1].updatedAt)
+    }
+
+    @Test
+    fun movieDao_categoryCount_returns_correct_number_of_movies_in_that_category() {
+        // Arrange
+        val upcomingMovieOne = MovieEntity.create(
+            id = 1,
+            title = "upcoming movie 1",
+            category = Category.UPCOMING
+        )
+
+        val trendingMovieOne = MovieEntity.create(
+            id = 2,
+            title = "trending movie 1",
+            category = Category.TRENDING
+        )
+
+        val trendingMovieTwo = MovieEntity.create(
+            id = 3,
+            title = "trending movie 2",
+            category = Category.TRENDING
+        )
+
+        movieDao.insert(listOf(trendingMovieOne, trendingMovieTwo, upcomingMovieOne))
+
+        // Act
+        val trendingCount = movieDao.categoryCount(Category.TRENDING)
+        val upcomingCount = movieDao.categoryCount(Category.UPCOMING)
+
+        // Assert
+        Truth.assertThat(movieDao.count()).isEqualTo(3)
+
+        Truth.assertThat(trendingCount).isEqualTo(2)
+        Truth.assertThat(upcomingCount).isEqualTo(1)
     }
 }
