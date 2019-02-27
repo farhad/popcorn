@@ -1,6 +1,7 @@
 package io.github.farhad.popcorn.data.repository
 
 import io.github.farhad.popcorn.data.db.LocalDataSource
+import io.github.farhad.popcorn.data.entity.Category
 import io.github.farhad.popcorn.data.remote.RemoteDataSource
 import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.domain.model.Performer
@@ -19,56 +20,78 @@ class AppRepository constructor(
     private val transformer: EntityTransformer
 ) : Repository {
 
-    private var lastUpcomingMovieUpdatedAt: Instant = Instant.now()
-    private var lastTrendingMovieUpdatedAt: Instant = Instant.now()
+
+    // initializing updatedAts to beginning of timestamp (1970-01-01)
+    private var lastTrendingUpdatedAt: Instant = Instant.ofEpochMilli(0)
+    private var lastUpcomingUpdatedAt: Instant = Instant.ofEpochMilli(0)
 
     override fun getUpcomingMovies(paginationId: Any, pageSize: Int): Observable<List<Movie>> {
-        val local = localDataSource.getUpcomingMovies(lastTrendingMovieUpdatedAt, pageSize, IOTransformer())
+
+        val local = localDataSource.getUpcomingMovies(lastUpcomingUpdatedAt, pageSize, IOTransformer())
+
         val remote = remoteDataSource.getUpcomingMovies(paginationId as Int, IOTransformer())
+            .map { movieList ->
+                movieList.map { it.copy(category = Category.UPCOMING, updatedAt = Instant.now()) }
+                localDataSource.upsertUpcomingMovies(movieList)
+                lastUpcomingUpdatedAt = movieList.last().updatedAt
+                return@map movieList
+            }
+            .compose(IOTransformer())
 
-        remote.map { movieList ->
-            localDataSource.upsertUpcomingMovies(movieList)
-            lastUpcomingMovieUpdatedAt = movieList.last().updatedAt
-            movieList
-        }.compose(IOTransformer())
-
-        return Observable.concat(local, remote).compose(transformer.MovieTransformer())
+        return local.filter { it.isEmpty() }
+            .switchIfEmpty(remote)
+            .compose(transformer.MovieTransformer())
     }
 
     override fun getTrendingMovies(paginationId: Any, pageSize: Int): Observable<List<Movie>> {
-        val local = localDataSource.getTrendingMovies(lastTrendingMovieUpdatedAt, pageSize, IOTransformer())
+
+        val local = localDataSource.getTrendingMovies(lastTrendingUpdatedAt, pageSize, IOTransformer())
+
         val remote = remoteDataSource.getTrendingMovies(paginationId as Int, IOTransformer())
+            .map { movieList ->
+                movieList.map { it.copy(category = Category.TRENDING, updatedAt = Instant.now()) }
+                localDataSource.upsertTrendingMovies(movieList)
+                lastTrendingUpdatedAt = movieList.last().updatedAt
+                return@map movieList
+            }
+            .compose(IOTransformer())
 
-        remote.map { movieList ->
-            localDataSource.upsertTredingMovies(movieList)
-            lastTrendingMovieUpdatedAt = movieList.last().updatedAt
-            movieList
-        }.compose(IOTransformer())
-
-        return Observable.concat(local, remote).compose(transformer.MovieTransformer())
+        return local.filter { it.isEmpty() }
+            .switchIfEmpty(remote)
+            .compose(transformer.MovieTransformer())
     }
 
     override fun getMovieCast(movieId: Int): Observable<List<Performer>> {
+
         val local = localDataSource.getMoviePerformers(movieId, IOTransformer())
+
         val remote = remoteDataSource.getMoviePerformers(movieId, IOTransformer())
+            .map { performerList ->
+                performerList.map { it.copy(movieId = movieId) }
+                localDataSource.upsertMoviePerformers(performerList)
+                return@map performerList
+            }
+            .compose(IOTransformer())
 
-        remote.map { performerList ->
-            localDataSource.upsertMoviePerformers(performerList)
-            return@map
-        }.compose(IOTransformer())
-
-        return Observable.concat(local, remote).compose(transformer.PerformerTransformer())
+        return local.filter { it.isEmpty() }
+            .switchIfEmpty(remote)
+            .compose(transformer.PerformerTransformer())
     }
 
     override fun getMovieCrew(movieId: Int): Observable<List<Role>> {
+
         val local = localDataSource.getMovieRoles(movieId, IOTransformer())
+
         val remote = remoteDataSource.getMovieRoles(movieId, IOTransformer())
+            .map { roleList ->
+                roleList.map { it.copy(movieId = movieId) }
+                localDataSource.upsertMovieRoles(roleList)
+                return@map roleList
+            }
+            .compose(IOTransformer())
 
-        remote.map { roleList ->
-            localDataSource.upsertMovieRoles(roleList)
-            return@map
-        }.compose(IOTransformer())
-
-        return Observable.concat(local, remote).compose(transformer.RoleTransformer())
+        return local.filter { it.isEmpty() }
+            .switchIfEmpty(remote)
+            .compose(transformer.RoleTransformer())
     }
 }

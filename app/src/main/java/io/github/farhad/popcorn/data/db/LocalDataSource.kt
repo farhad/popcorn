@@ -1,6 +1,5 @@
 package io.github.farhad.popcorn.data.db
 
-import io.github.farhad.popcorn.data.entity.Category
 import io.github.farhad.popcorn.data.entity.MovieEntity
 import io.github.farhad.popcorn.data.entity.PerformerEntity
 import io.github.farhad.popcorn.data.entity.RoleEntity
@@ -40,12 +39,12 @@ class LocalDataSource constructor(private val database: MovieDatabase) {
         return Observable.just(database.getRoleEntityDao().getMovieRolesList(movieId)).compose(transformer)
     }
 
-    fun upsertTredingMovies(movies: List<MovieEntity>) = Completable.fromAction {
-        database.getMovieEntityDao().upsert(movies.map { it.copy(category = Category.TRENDING) })
+    fun upsertTrendingMovies(movies: List<MovieEntity>) = Completable.fromAction {
+        database.getMovieEntityDao().upsert(movies)
     }
 
     fun upsertUpcomingMovies(movies: List<MovieEntity>) = Completable.fromAction {
-        database.getMovieEntityDao().upsert(movies.map { it.copy(category = Category.UPCOMING) })
+        database.getMovieEntityDao().upsert(movies)
     }
 
     fun upsertMoviePerformers(performers: List<PerformerEntity>) = Completable.fromAction {
