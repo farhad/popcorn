@@ -3,9 +3,11 @@ package io.github.farhad.popcorn.remote
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth
+import com.google.gson.stream.MalformedJsonException
 import io.github.farhad.popcorn.data.entity.MovieEntity
 import io.github.farhad.popcorn.data.entity.PerformerEntity
 import io.github.farhad.popcorn.data.entity.RoleEntity
+import io.github.farhad.popcorn.data.remote.RemoteDataSource
 import io.github.farhad.popcorn.data.remote.api.*
 import io.github.farhad.popcorn.fixture.RelayTransformer
 import okhttp3.mockwebserver.MockResponse
@@ -14,6 +16,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import retrofit2.HttpException
 
 
 @RunWith(AndroidJUnit4::class)
@@ -30,7 +33,7 @@ class ApiServiceTest {
         }
     }
 
-    private lateinit var apiFactory: ApiFactory
+    private lateinit var remoteDataSource: RemoteDataSource
     private lateinit var mockWebServer: MockWebServer
 
     @Before
@@ -43,7 +46,7 @@ class ApiServiceTest {
         val gsonFactory = GsonFactory()
         val retrofit = NetworkingConfig(httpUrl.toString(), okHttpClient, gsonFactory).retrofit()
         val apiService = retrofit.create(ApiService::class.java)
-        apiFactory = ApiFactory(apiService)
+        remoteDataSource = RemoteDataSource(apiService)
     }
 
     @After
@@ -58,7 +61,7 @@ class ApiServiceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody("{}"))
 
         // Act
-        apiFactory.getUpcomingMovies(1, transformer).test()
+        remoteDataSource.getUpcomingMovies(1, transformer).test()
 
         // Assert
         val request = mockWebServer.takeRequest().requestUrl
@@ -74,7 +77,7 @@ class ApiServiceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(mockedResponse))
 
         // Act
-        val subscription = apiFactory.getUpcomingMovies(1, transformer).test()
+        val subscription = remoteDataSource.getUpcomingMovies(1, transformer).test()
 
         // Assert
         subscription.assertValue { movieList -> movieList.isNotEmpty() }
@@ -84,6 +87,35 @@ class ApiServiceTest {
                 return@assertValue item.id == 438650 && item.title == "Cold Pursuit"
             }
             .assertComplete()
+            .assertNoErrors()
+    }
+
+    @Test
+    fun getUpcomingMovies_throws_http_exception_when_status_code_is_not_200() {
+        // Arrange
+        val transformer = RelayTransformer<List<MovieEntity>?>()
+        mockWebServer.enqueue(MockResponse().setResponseCode(401).setBody("{}"))
+
+        // Act
+        val subscription = remoteDataSource.getUpcomingMovies(1, transformer).test()
+
+        // Assert
+        subscription.assertError { it is HttpException }
+            .assertNotComplete()
+    }
+
+    @Test
+    fun getUpcomingMovies_throws_malformedJsonException_when_malformed_response_is_received_with_status_code_200() {
+        // Arrange
+        val transformer = RelayTransformer<List<MovieEntity>?>()
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody("{malformed response!!!}"))
+
+        // Act
+        val subscription = remoteDataSource.getUpcomingMovies(1, transformer).test()
+
+        // Assert
+        subscription.assertError { it is MalformedJsonException }
+            .assertNotComplete()
     }
 
     @Test
@@ -94,7 +126,7 @@ class ApiServiceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(mockedResponse))
 
         // Act
-        val subscription = apiFactory.getTrendingMovies(1, transformer).test()
+        val subscription = remoteDataSource.getTrendingMovies(1, transformer).test()
 
         // Assert
         subscription.assertValue { movieList -> movieList.isNotEmpty() }
@@ -104,6 +136,7 @@ class ApiServiceTest {
                 return@assertValue item.id == 424694 && item.title == "Bohemian Rhapsody"
             }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -114,7 +147,7 @@ class ApiServiceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(mockedResponse))
 
         // Act
-        val subscription = apiFactory.getMoviePerformers(WHITE_BOY_RICK_MOVIE_ID, transformer).test()
+        val subscription = remoteDataSource.getMoviePerformers(WHITE_BOY_RICK_MOVIE_ID, transformer).test()
 
         // Assert
         subscription.assertValue { performerList -> performerList.isNotEmpty() }
@@ -124,6 +157,7 @@ class ApiServiceTest {
                 return@assertValue item.id == "595e54719251410c56084dbd" && item.name == "Richie Merritt"
             }
             .assertComplete()
+            .assertNoErrors()
     }
 
     @Test
@@ -134,7 +168,7 @@ class ApiServiceTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(mockedResponse))
 
         // Act
-        val subscription = apiFactory.getMovieRoles(WHITE_BOY_RICK_MOVIE_ID, transformer).test()
+        val subscription = remoteDataSource.getMovieRoles(WHITE_BOY_RICK_MOVIE_ID, transformer).test()
 
         // Assert
         subscription.assertValue { roleList -> roleList.isNotEmpty() }
@@ -144,6 +178,7 @@ class ApiServiceTest {
                 return@assertValue item.id == "58937069c3a3684a3c000639" && item.name == "Yann Demange"
             }
             .assertComplete()
+            .assertNoErrors()
     }
 
 }
