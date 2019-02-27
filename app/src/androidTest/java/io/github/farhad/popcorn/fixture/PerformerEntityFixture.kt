@@ -1,4 +1,4 @@
-package java.io.github.farhad.popcorn.fixture
+package io.github.farhad.popcorn.fixture
 
 import io.github.farhad.popcorn.data.entity.PerformerEntity
 
