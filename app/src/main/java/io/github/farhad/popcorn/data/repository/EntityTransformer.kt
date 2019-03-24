@@ -10,7 +10,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.ObservableTransformer
 
-sealed class EntityTransformer {
+class EntityTransformer {
 
     inner class MovieTransformer : ObservableTransformer<List<MovieEntity>?, List<Movie>?> {
 
