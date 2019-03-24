@@ -41,7 +41,7 @@ class ApiServiceTest {
         mockWebServer = MockWebServer()
         val httpUrl = mockWebServer.url(BASE_URL)
 
-        val apiKeyInterceptor = ApiKeyInterceptor(TEST_API_KEY)
+        val apiKeyInterceptor = ApiKeyInterceptor()
         val okHttpClient = MovieApiHttpClient.create(apiKeyInterceptor)
         val gsonFactory = GsonFactory()
         val retrofit = NetworkingConfig(httpUrl.toString(), okHttpClient, gsonFactory).retrofit()
