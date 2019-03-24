@@ -10,16 +10,13 @@ import io.github.farhad.popcorn.domain.repository.Repository
 import io.github.farhad.popcorn.domain.transformer.IOTransformer
 import io.reactivex.Observable
 import org.threeten.bp.Instant
+import javax.inject.Inject
 
-/**
- * all the repository instances should be injected here
- */
-class AppRepository constructor(
-    private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource,
-    private val transformer: EntityTransformer
+class AppRepository @Inject constructor(
+    val remoteDataSource: RemoteDataSource,
+    val localDataSource: LocalDataSource,
+    val transformer: EntityTransformer
 ) : Repository {
-
 
     // initializing updatedAts to beginning of timestamp (1970-01-01)
     private var lastTrendingUpdatedAt: Instant = Instant.ofEpochMilli(0)

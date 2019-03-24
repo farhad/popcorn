@@ -6,11 +6,9 @@ import io.github.farhad.popcorn.data.entity.RoleEntity
 import io.github.farhad.popcorn.data.remote.api.ApiService
 import io.github.farhad.popcorn.domain.transformer.Transformer
 import io.reactivex.Observable
+import javax.inject.Inject
 
-/**
- * [apiService] should be injected here
- */
-class RemoteDataSource constructor(private val apiService: ApiService) {
+class RemoteDataSource @Inject constructor(val apiService: ApiService) {
 
     fun getUpcomingMovies(page: Int = 1, transformer: Transformer<List<MovieEntity>?>): Observable<List<MovieEntity>?> {
         return apiService.getUpcomingMovies(page)

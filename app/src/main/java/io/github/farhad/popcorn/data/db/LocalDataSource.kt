@@ -7,8 +7,9 @@ import io.github.farhad.popcorn.domain.transformer.Transformer
 import io.reactivex.Completable
 import io.reactivex.Observable
 import org.threeten.bp.Instant
+import javax.inject.Inject
 
-class LocalDataSource constructor(private val database: MovieDatabase) {
+class LocalDataSource @Inject constructor(val database: MovieDatabase) {
 
     fun getUpcomingMovies(
         updatedAfter: Instant,
