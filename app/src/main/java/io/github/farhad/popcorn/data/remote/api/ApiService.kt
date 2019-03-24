@@ -8,12 +8,15 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("/movie/upcoming")
+    companion object {
+        const val API_VERSION = "3"
+    }
+    @GET("$API_VERSION/movie/upcoming")
     fun getUpcomingMovies(@Query("page") page: Int): Observable<PaginatedMovieList>
 
-    @GET("/trending/movie/week")
+    @GET("$API_VERSION/trending/movie/week")
     fun getWeeklyTrendingMovies(@Query("page") page: Int): Observable<PaginatedMovieList>
 
-    @GET("/movie/{movieId}/credits")
+    @GET("$API_VERSION/movie/{movieId}/credits")
     fun getMovieCredits(@Path("movieId") movieId: Int): Observable<MovieCreditList>
 }

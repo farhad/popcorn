@@ -1,4 +1,4 @@
-package io.github.farhad.popcorn.di
+package io.github.farhad.popcorn.testing
 
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -6,6 +6,10 @@ import dagger.Provides
 import io.github.farhad.popcorn.data.remote.api.ApiKeyInterceptor
 import io.github.farhad.popcorn.data.remote.api.ApiService
 import io.github.farhad.popcorn.data.remote.api.DateTypeConverter
+import io.github.farhad.popcorn.di.ApplicationScope
+import io.github.farhad.popcorn.di.NamedString
+import io.github.farhad.popcorn.di.StringType
+import io.github.farhad.popcorn.remote.PlugAndPlayInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Converter
@@ -16,7 +20,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Module
-class NetworkingModule {
+class TestNetworkingModule {
 
     @Provides
     @ApplicationScope
@@ -63,20 +67,29 @@ class NetworkingModule {
     }
 
     @Provides
-    fun provideInterceptors(@NamedString(StringType.API_KEY) apiKey: String): Array<Interceptor> {
-        return arrayOf(ApiKeyInterceptor(apiKey))
+    fun provideInterceptors(
+        @NamedString(StringType.API_KEY) apiKey: String,
+        plugAndPlayInterceptor: PlugAndPlayInterceptor
+    ): Array<Interceptor> {
+
+        return arrayOf(ApiKeyInterceptor(apiKey), plugAndPlayInterceptor)
     }
 
     @Provides
     @NamedString(StringType.API_KEY)
     fun provideApiKeyString(): String {
-        /** this should be saved somewhere safe. not here!*/
-        return "4fa793e0dc95463d75d1288e5e6e6a32"
+        return "test-api-key"
     }
 
     @Provides
     @NamedString(StringType.BASE_URL)
     fun provideBaseUrl(): String {
         return "https://api.themoviedb.org/"
+    }
+
+    @Provides
+    @ApplicationScope
+    fun providePlugAndPlayInterceptor(): PlugAndPlayInterceptor {
+        return PlugAndPlayInterceptor()
     }
 }
