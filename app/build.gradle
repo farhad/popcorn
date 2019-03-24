@@ -67,6 +67,10 @@ dependencies {
     implementation configs.appcompat
     implementation configs.constraintlayout
 
+    // DI
+    implementation configs.dagger_core
+    kapt configs.dagger_compiler
+
     // RxJava
     implementation configs.rxJava
     implementation configs.rxAndroid
