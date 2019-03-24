@@ -13,7 +13,7 @@ ext {
     v_major = 1
     v_minor = 0
     v_patch = 0
-    version_code = v_major*100 + v_minor*10 + v_patch
+    version_code = v_major * 100 + v_minor * 10 + v_patch
     version_name = "${v_major}.${v_minor}.${v_patch}"
 
     // Kotlin
@@ -47,17 +47,23 @@ ext {
     rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.0"
 
     // DI
-    dagger_core = "com.google.dagger:dagger:2.21"
-    dagger_compiler = "com.google.dagger:dagger-compiler:2.21"
+    dagger_version = "2.21"
+    dagger_core = "com.google.dagger:dagger:$dagger_version"
+    dagger_compiler = "com.google.dagger:dagger-compiler:$dagger_version"
+    dagger_android = "com.google.dagger:dagger-android:$dagger_version"
+    dagger_android_support = "com.google.dagger:dagger-android-support:$dagger_version"
+    dagger_android_processor = "com.google.dagger:dagger-android-processor:$dagger_version"
+
 
     // Android unit and instrumentation testing
     junit = 'junit:junit:4.12'
-    android_test_runner = 'androidx.test:runner:1.1.2-alpha01'
-    android_junit_extentions = 'androidx.test.ext:junit:1.1.0'
-    android_espresso = 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
-    android_instrumentation_runner = "androidx.test.runner.AndroidJUnitRunner"
     mockito_kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
     google_truth = "com.google.truth:truth:0.42"
     okttp_mockserver = "com.squareup.okhttp3:mockwebserver:$okhttp_version"
+
+    android_test_runner = 'androidx.test:runner:1.1.2-alpha01'
+    android_junit_extentions = 'androidx.test.ext:junit:1.1.0'
+    android_espresso = 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
+    android_instrumentation_runner = 'io.github.farhad.popcorn.testing.TestRunner'
 
 }

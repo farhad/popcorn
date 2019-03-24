@@ -5,13 +5,7 @@ import io.github.farhad.popcorn.di.AppComponent
 import io.github.farhad.popcorn.di.DaggerAppComponent
 import io.github.farhad.popcorn.di.HasAppComponent
 
-class PopcornApp : Application(), HasAppComponent {
+open class PopcornApp : Application(), HasAppComponent {
 
-    override fun onCreate() {
-        super.onCreate()
-
-    }
-
-    override val appComponent: AppComponent
-        get() = DaggerAppComponent.builder().application(this).build()
+    override val appComponent: AppComponent = DaggerAppComponent.builder().application(this).build()
 }
