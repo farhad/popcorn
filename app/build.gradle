@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 def configs = rootProject.ext
 
@@ -66,18 +67,30 @@ dependencies {
     // Android UI
     implementation configs.appcompat
     implementation configs.constraintlayout
+    implementation configs.material_components
+
+    // Shimmering Skeleton Loading Effect
+    implementation configs.skeleton_loading
+    implementation configs.shimmer_layout
 
     // DI
-    implementation configs.dagger_core
+    implementation configs.dagger
     implementation configs.dagger_android
     implementation configs.dagger_android_support
 
     kapt configs.dagger_compiler
     kapt configs.dagger_android_processor
-    
+
     // RxJava
     implementation configs.rxJava
     implementation configs.rxAndroid
+
+    // Lifecycle and ViewModel
+    implementation configs.viewmodel
+    implementation configs.lifecycle_extensions
+
+    // Navigation
+    implementation configs.navigation_fragment_ktx
 
     // Unit Testing
     testImplementation configs.junit

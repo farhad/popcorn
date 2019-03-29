@@ -6,6 +6,6 @@ import io.reactivex.schedulers.Schedulers
 
 class IOTransformer<T> : Transformer<T>() {
     override fun apply(upstream: Observable<T>): ObservableSource<T> {
-        return upstream.observeOn(Schedulers.io())
+        return upstream.observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
     }
 }

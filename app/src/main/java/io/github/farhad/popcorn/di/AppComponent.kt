@@ -2,12 +2,17 @@ package io.github.farhad.popcorn.di
 
 import dagger.BindsInstance
 import dagger.Component
+import dagger.android.AndroidInjectionModule
 import io.github.farhad.popcorn.PopcornApp
-import io.github.farhad.popcorn.data.remote.api.ApiKeyInterceptor
 
 @ApplicationScope
 @Component(
     modules = [
+        AndroidInjectionModule::class,
+        ActivityModule::class,
+        FragmentModule::class,
+        AppModule::class,
+        ViewModelModule::class,
         DbModule::class,
         NetworkingModule::class,
         DataSourceModule::class]
@@ -21,5 +26,5 @@ interface AppComponent {
         fun build(): AppComponent
     }
 
-    fun inject(apiKeyInterceptor: ApiKeyInterceptor)
+    fun inject(app: PopcornApp)
 }

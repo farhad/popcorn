@@ -13,9 +13,9 @@ import org.threeten.bp.Instant
 import javax.inject.Inject
 
 class AppRepository @Inject constructor(
-    val remoteDataSource: RemoteDataSource,
-    val localDataSource: LocalDataSource,
-    val transformer: EntityTransformer
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource,
+    private val transformer: EntityTransformer
 ) : Repository {
 
     // initializing updatedAts to beginning of timestamp (1970-01-01)
@@ -24,7 +24,7 @@ class AppRepository @Inject constructor(
 
     override fun getUpcomingMovies(paginationId: Any, pageSize: Int): Observable<List<Movie>> {
 
-        val local = localDataSource.getUpcomingMovies(lastUpcomingUpdatedAt, pageSize, IOTransformer())
+//        val local = localDataSource.getUpcomingMovies(lastUpcomingUpdatedAt, pageSize, IOTransformer())
 
         val remote = remoteDataSource.getUpcomingMovies(paginationId as Int, IOTransformer())
             .map { movieList ->
@@ -35,8 +35,7 @@ class AppRepository @Inject constructor(
             }
             .compose(IOTransformer())
 
-        return local.filter { it.isEmpty() }
-            .switchIfEmpty(remote)
+        return remote
             .compose(transformer.MovieTransformer())
     }
 
