@@ -30,8 +30,7 @@ open class PopcornApp : Application(), HasAppComponent, HasActivityInjector, Has
     override fun activityInjector(): AndroidInjector<Activity> = activityDispatchingAndroidInjector
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
 
-    final override lateinit var appComponent: AppComponent
-        private set
+    override lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
