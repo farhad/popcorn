@@ -28,6 +28,9 @@ data class MovieEntity(
     @SerializedName("poster_path")
     val posterUrl: String?,
 
+    @SerializedName("backdrop_path")
+    val backdropUrl: String?,
+
     @SerializedName("vote_average")
     val voteAverage: Float?,
 

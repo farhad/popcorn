@@ -25,6 +25,7 @@ class EntityMapper @Inject constructor(
         movieEntity.overview,
         movieEntity.releaseDate?.time,
         posterBaseUrl + movieEntity.posterUrl,
+        backdropBaseUrl + movieEntity.backdropUrl,
         movieEntity.voteAverage,
         movieEntity.voteCount,
         movieEntity.isAdult

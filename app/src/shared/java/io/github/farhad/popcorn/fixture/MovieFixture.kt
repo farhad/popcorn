@@ -11,6 +11,7 @@ fun Movie.Companion.create(
     overview: String? = null,
     releaseDate: Long? = null,
     posterUrl: String? = null,
+    backdropUrl: String? = null,
     voteAverage: Float? = null,
     voteCount: Int? = null,
     isAdult: Boolean = false
@@ -21,6 +22,7 @@ fun Movie.Companion.create(
         overview,
         releaseDate,
         posterUrl,
+        backdropUrl,
         voteAverage,
         voteCount,
         isAdult
