@@ -45,7 +45,7 @@ class TestNetworkingModule {
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
-        @NamedString(StringType.BASE_URL) baseUrl: String
+        @NamedString(StringType.API_BASE_URL) baseUrl: String
     ): Retrofit {
 
         return Retrofit.Builder()
@@ -82,7 +82,7 @@ class TestNetworkingModule {
     }
 
     @Provides
-    @NamedString(StringType.BASE_URL)
+    @NamedString(StringType.API_BASE_URL)
     fun provideBaseUrl(): String {
         return "https://api.themoviedb.org/"
     }

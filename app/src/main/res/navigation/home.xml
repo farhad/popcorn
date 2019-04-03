@@ -5,7 +5,7 @@
 
     <fragment
             android:id="@+id/movieListFragment"
-            android:name="io.github.farhad.popcorn.ui.movies.MovieListFragment"
+            android:name="io.github.farhad.popcorn.ui.movies.TrendingMoviesFragment"
             android:label="MovieListFragment">
 
     </fragment>

@@ -1,17 +1,20 @@
 package io.github.farhad.popcorn.di
 
+import android.content.Context
+import android.content.res.Resources
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import io.github.farhad.popcorn.data.remote.api.ApiKeyInterceptor
-import io.github.farhad.popcorn.data.remote.api.ApiService
-import io.github.farhad.popcorn.data.remote.api.DateTypeConverter
+import io.github.farhad.popcorn.R
+import io.github.farhad.popcorn.data.remote.api.*
+import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -25,12 +28,13 @@ class NetworkingModule {
     }
 
     @Provides
-    fun provideOkHttpClient(interceptors: Array<Interceptor>): OkHttpClient {
+    fun provideOkHttpClient(interceptors: Array<Interceptor>, cache: Cache): OkHttpClient {
 
         val okHttpClient = OkHttpClient.Builder()
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .cache(cache)
 
         interceptors.forEach { okHttpClient.addInterceptor(it) }
 
@@ -41,7 +45,7 @@ class NetworkingModule {
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
         converterFactory: Converter.Factory,
-        @NamedString(StringType.BASE_URL) baseUrl: String
+        @NamedString(StringType.API_BASE_URL) baseUrl: String
     ): Retrofit {
 
         return Retrofit.Builder()
@@ -63,20 +67,28 @@ class NetworkingModule {
     }
 
     @Provides
-    fun provideInterceptors(@NamedString(StringType.API_KEY) apiKey: String): Array<Interceptor> {
-        return arrayOf(ApiKeyInterceptor(apiKey))
+    fun provideInterceptors(context: Context, @NamedString(StringType.API_KEY) apiKey: String): Array<Interceptor> {
+        return arrayOf(
+            ApiKeyInterceptor(apiKey),
+            OnlineCacheInterceptor(),
+            OfflineCacheInterceptor(context)
+        )
+    }
+
+    /**
+     * offline network cache to use with picasso.
+     */
+    @Provides
+    fun provideOkhttpCache(context: Context): Cache {
+        val httpCacheDirectory = File(context.cacheDir, "picasso-cache")
+        return Cache(httpCacheDirectory, 50 * 1024 * 1024) //50 MB of Disk Cache
     }
 
     @Provides
     @NamedString(StringType.API_KEY)
-    fun provideApiKeyString(): String {
-        /** this should be saved somewhere safe. not here!*/
-        return "4fa793e0dc95463d75d1288e5e6e6a32"
-    }
+    fun provideApiKeyString(resources: Resources): String = resources.getString(R.string.api_key)
 
     @Provides
-    @NamedString(StringType.BASE_URL)
-    fun provideBaseUrl(): String {
-        return "https://api.themoviedb.org/"
-    }
+    @NamedString(StringType.API_BASE_URL)
+    fun provideBaseUrl(resources: Resources): String = resources.getString(R.string.api_base_url)
 }

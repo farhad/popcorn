@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Popcorn</string>
+
+    <string name="api_base_url">https://api.themoviedb.org/</string>
+    <string name="poster_base_url">https://image.tmdb.org/t/p/w342</string>
+    <string name="backdrop_base_url">https://image.tmdb.org/t/p/w780</string>
+    <string name="performer_role_base_url">https://image.tmdb.org/t/p/w200</string>
+    <string name="api_key">4fa793e0dc95463d75d1288e5e6e6a32</string>
 </resources>

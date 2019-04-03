@@ -73,6 +73,9 @@ dependencies {
     implementation configs.skeleton_loading
     implementation configs.shimmer_layout
 
+    // Image Loading
+    implementation configs.picasso
+
     // DI
     implementation configs.dagger
     implementation configs.dagger_android

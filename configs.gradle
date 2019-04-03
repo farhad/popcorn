@@ -46,6 +46,9 @@ ext {
     skeleton_loading = "com.ethanhua:skeleton:1.1.2"
     shimmer_layout = "io.supercharge:shimmerlayout:2.1.0"
 
+    // Image Loading
+    picasso = "com.squareup.picasso:picasso:2.71828"
+
     // Lifecycle and ViewModel
     viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0"
     lifecycle_extensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"

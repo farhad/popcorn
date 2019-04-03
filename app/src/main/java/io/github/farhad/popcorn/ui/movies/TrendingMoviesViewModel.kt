@@ -8,7 +8,7 @@ import io.github.farhad.popcorn.domain.usecase.GetUpcomingMovies
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class MovieViewModel @Inject constructor(val repository: AppRepository) : ViewModel() {
+class TrendingMoviesViewModel @Inject constructor(val repository: AppRepository) : ViewModel() {
 
     fun getUpcomingMovies(): Observable<List<Movie>> {
 

@@ -7,6 +7,7 @@ import io.github.farhad.popcorn.data.db.MovieDatabase
 import io.github.farhad.popcorn.data.remote.RemoteDataSource
 import io.github.farhad.popcorn.data.remote.api.ApiService
 import io.github.farhad.popcorn.data.repository.AppRepository
+import io.github.farhad.popcorn.data.repository.EntityMapper
 import io.github.farhad.popcorn.data.repository.EntityTransformer
 
 @Module
@@ -32,5 +33,13 @@ class DataSourceModule {
 
     @Provides
     @ApplicationScope
-    fun provideEntityTransformer(): EntityTransformer = EntityTransformer()
+    fun provideEntityTransformer(mapper: EntityMapper): EntityTransformer = EntityTransformer(mapper)
+
+    @Provides
+    @ApplicationScope
+    fun provideEntityMapper(
+        @NamedString(StringType.POSTER_BASE_URL) posterBaseUrl: String,
+        @NamedString(StringType.BACKDROP_BASE_URL) backDropUrl: String,
+        @NamedString(StringType.PERFORMER_ROLE_BASE_URL) performerRoleBaseUrl: String
+    ): EntityMapper = EntityMapper(posterBaseUrl, backDropUrl, performerRoleBaseUrl)
 }
