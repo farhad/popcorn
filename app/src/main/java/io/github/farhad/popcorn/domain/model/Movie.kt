@@ -6,6 +6,7 @@ data class Movie(
     val overview: String?,
     val releaseDate: Long?,
     val posterUrl: String?,
+    val backdropUrl: String?,
     val voteAverage: Float?,
     val voteCount: Int?,
     val isAdult: Boolean
