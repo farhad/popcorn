@@ -9,5 +9,8 @@ annotation class NamedString(val type: StringType)
 
 enum class StringType {
     API_KEY,
-    BASE_URL
+    API_BASE_URL,
+    POSTER_BASE_URL,
+    BACKDROP_BASE_URL,
+    PERFORMER_ROLE_BASE_URL
 }
