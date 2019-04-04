@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,9 +15,6 @@ import io.github.farhad.popcorn.R
 import io.github.farhad.popcorn.di.Injectable
 import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.utils.ImageLoader
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_trending_movies.*
 import javax.inject.Inject
 
@@ -32,8 +30,6 @@ class TrendingMoviesFragment : Fragment(), Injectable {
 
     private lateinit var adapter: TrendingMoviesAdapter
 
-    private lateinit var disposable: Disposable
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_trending_movies, container, false)
     }
@@ -41,19 +37,7 @@ class TrendingMoviesFragment : Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(TrendingMoviesViewModel::class.java)
-    }
 
-    override fun onResume() {
-        super.onResume()
-
-        disposable = viewModel.getTrendingMovies().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { addItemsToRecyclerView(it) },
-                { Toast.makeText(activity, it.localizedMessage, Toast.LENGTH_LONG).show() })
-    }
-
-    private fun addItemsToRecyclerView(list: List<Movie>) {
         recyclerview_trending_movies.isNestedScrollingEnabled = false
         recyclerview_trending_movies.layoutManager = GridLayoutManager(activity, 2, RecyclerView.VERTICAL, false)
         adapter = TrendingMoviesAdapter(imageLoader) { movie, view ->
@@ -61,6 +45,32 @@ class TrendingMoviesFragment : Fragment(), Injectable {
         }
         recyclerview_trending_movies.adapter = adapter
 
+        if (savedInstanceState == null) {
+            viewModel.getTrendingMovies()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.viewState.observe(this, Observer { state ->
+            handleViewState(state)
+            if (state != null) state.movies?.let {
+                addItemsToRecyclerView(it)
+            }
+        })
+
+        viewModel.errorState.observe(this, Observer { error ->
+            error?.let { Toast.makeText(activity, it.message, Toast.LENGTH_LONG).show() }
+        })
+    }
+
+    private fun handleViewState(state: TrendingMoviesState) {
+        if (!state.showLoading) progress_trending_movies.visibility = View.GONE
+    }
+
+
+    private fun addItemsToRecyclerView(list: List<Movie>) {
         adapter.addItems(list)
     }
 }
