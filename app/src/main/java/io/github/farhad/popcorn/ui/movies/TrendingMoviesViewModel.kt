@@ -1,14 +1,14 @@
 package io.github.farhad.popcorn.ui.movies
 
-import androidx.lifecycle.ViewModel
 import io.github.farhad.popcorn.data.repository.AppRepository
 import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.domain.transformer.RelayTransformer
 import io.github.farhad.popcorn.domain.usecase.GetUpcomingMovies
+import io.github.farhad.popcorn.ui.common.BaseViewModel
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class TrendingMoviesViewModel @Inject constructor(val repository: AppRepository) : ViewModel() {
+class TrendingMoviesViewModel @Inject constructor(val repository: AppRepository) : BaseViewModel() {
 
     fun getUpcomingMovies(): Observable<List<Movie>> {
 
