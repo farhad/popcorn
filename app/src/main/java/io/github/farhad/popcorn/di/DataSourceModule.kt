@@ -9,6 +9,7 @@ import io.github.farhad.popcorn.data.remote.api.ApiService
 import io.github.farhad.popcorn.data.repository.AppRepository
 import io.github.farhad.popcorn.data.repository.EntityMapper
 import io.github.farhad.popcorn.data.repository.EntityTransformer
+import io.github.farhad.popcorn.domain.repository.Repository
 
 @Module
 class DataSourceModule {
@@ -19,7 +20,7 @@ class DataSourceModule {
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource,
         entityTransformer: EntityTransformer
-    ): AppRepository {
+    ): Repository {
         return AppRepository(remoteDataSource, localDataSource, entityTransformer)
     }
 

@@ -44,17 +44,22 @@ class AppRepository @Inject constructor(
         val local = localDataSource.getTrendingMovies(lastTrendingUpdatedAt, pageSize, IOTransformer())
 
         val remote = remoteDataSource.getTrendingMovies(paginationId as Int, IOTransformer())
-            .map { movieList ->
-                movieList.map { it.copy(category = Category.TRENDING, updatedAt = Instant.now()) }
-                localDataSource.upsertTrendingMovies(movieList)
-                lastTrendingUpdatedAt = movieList.last().updatedAt
-                return@map movieList
-            }
-            .compose(IOTransformer())
 
-        return local.filter { it.isEmpty() }
-            .switchIfEmpty(remote)
-            .compose(transformer.MovieTransformer())
+        return local.flatMap {
+            if (it.isEmpty()) {
+                return@flatMap remote.doOnNext { movies ->
+                    movies?.map { item ->
+                        val newItem = item.copy(category = Category.TRENDING, updatedAt = Instant.now())
+                        localDataSource.upsertTrendingMovies(listOf(newItem))
+                        lastTrendingUpdatedAt = newItem.updatedAt
+
+                        return@map
+                    }
+                }
+            } else {
+                return@flatMap local
+            }
+        }.compose(transformer.MovieTransformer())
     }
 
     override fun getMovieCast(movieId: Int): Observable<List<Performer>> {
