@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -37,6 +38,8 @@ open class PopcornApp : Application(), HasAppComponent, HasActivityInjector, Has
 
         appComponent = DaggerAppComponent.builder().application(this).build()
         appComponent.inject(this)
+
+        AndroidThreeTen.init(this)
 
         registerActivityLifecycleCallbacks(this)
     }

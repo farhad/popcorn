@@ -18,7 +18,8 @@ import io.github.farhad.popcorn.remote.ApiServiceTest
         DbModule::class,
         TestNetworkingModule::class,
         ImageModule::class,
-        DataSourceModule::class]
+        DataSourceModule::class,
+        UsecaseModule::class]
 )
 interface TestAppComponent : AppComponent {
     @Component.Builder

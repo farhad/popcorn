@@ -7,7 +7,7 @@
         tools:context=".ui.home.HomeActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_movie_list"
+            android:id="@+id/recyclerview_trending_movies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 

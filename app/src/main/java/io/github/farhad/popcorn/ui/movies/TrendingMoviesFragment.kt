@@ -17,7 +17,7 @@ import io.github.farhad.popcorn.utils.ImageLoader
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_movie_list.*
+import kotlinx.android.synthetic.main.fragment_trending_movies.*
 import javax.inject.Inject
 
 class TrendingMoviesFragment : Fragment(), Injectable {
@@ -35,7 +35,7 @@ class TrendingMoviesFragment : Fragment(), Injectable {
     private lateinit var disposable: Disposable
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_movie_list, container, false)
+        return inflater.inflate(R.layout.fragment_trending_movies, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +46,7 @@ class TrendingMoviesFragment : Fragment(), Injectable {
     override fun onResume() {
         super.onResume()
 
-        disposable = viewModel.getUpcomingMovies().subscribeOn(Schedulers.io())
+        disposable = viewModel.getTrendingMovies().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { addItemsToRecyclerView(it) },
@@ -54,12 +54,12 @@ class TrendingMoviesFragment : Fragment(), Injectable {
     }
 
     private fun addItemsToRecyclerView(list: List<Movie>) {
-        recyclerview_movie_list.isNestedScrollingEnabled = false
-        recyclerview_movie_list.layoutManager = GridLayoutManager(activity, 2, RecyclerView.VERTICAL, false)
+        recyclerview_trending_movies.isNestedScrollingEnabled = false
+        recyclerview_trending_movies.layoutManager = GridLayoutManager(activity, 2, RecyclerView.VERTICAL, false)
         adapter = TrendingMoviesAdapter(imageLoader) { movie, view ->
             // todo : implement! }
         }
-        recyclerview_movie_list.adapter = adapter
+        recyclerview_trending_movies.adapter = adapter
 
         adapter.addItems(list)
     }

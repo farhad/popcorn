@@ -16,7 +16,8 @@ import io.github.farhad.popcorn.PopcornApp
         DbModule::class,
         NetworkingModule::class,
         ImageModule::class,
-        DataSourceModule::class]
+        DataSourceModule::class,
+        UsecaseModule::class]
 )
 interface AppComponent {
     @Component.Builder
