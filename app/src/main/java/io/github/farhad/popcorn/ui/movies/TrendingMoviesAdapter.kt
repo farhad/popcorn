@@ -17,9 +17,13 @@ class TrendingMoviesAdapter constructor(
 
     val movies: MutableList<Movie> = mutableListOf()
 
-    fun addItems(items: List<Movie>) {
-        movies.addAll(items)
-        notifyDataSetChanged()
+    fun addItems(list: List<Movie>) {
+
+        if (!list.any { it in movies }) {
+            val oldSize = movies.size
+            movies.addAll(list)
+            notifyItemRangeInserted(oldSize - 1, list.size)
+        }
     }
 
     override fun getItemCount(): Int = movies.size
@@ -38,6 +42,9 @@ class TrendingMoviesAdapter constructor(
 
         fun bind(movie: Movie, imageLoader: ImageLoader, listener: (Movie, View) -> Unit) = with(itemView) {
             textview_title_movie.text = movie.title
+            textview_overview_movie.text = movie.overview
+            textview_voteaverage_movie.text = movie.voteAverage.toString()
+
             movie.posterUrl?.let { imageLoader.load(it, imageview_movie_trending) }
             setOnClickListener { listener(movie, itemView) }
         }
