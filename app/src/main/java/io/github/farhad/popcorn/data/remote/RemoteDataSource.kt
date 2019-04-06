@@ -8,7 +8,7 @@ import io.github.farhad.popcorn.domain.transformer.Transformer
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class RemoteDataSource @Inject constructor(val apiService: ApiService) {
+class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
     fun getUpcomingMovies(page: Int = 1, transformer: Transformer<List<MovieEntity>?>): Observable<List<MovieEntity>?> {
         return apiService.getUpcomingMovies(page)

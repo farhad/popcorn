@@ -6,7 +6,9 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import io.github.farhad.popcorn.R
-import io.github.farhad.popcorn.data.remote.api.*
+import io.github.farhad.popcorn.data.remote.api.ApiKeyInterceptor
+import io.github.farhad.popcorn.data.remote.api.ApiService
+import io.github.farhad.popcorn.data.remote.api.DateTypeConverter
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -28,6 +30,7 @@ class NetworkingModule {
     }
 
     @Provides
+    @NamedOkHttpClient(ClientType.CACHE_ON)
     fun provideOkHttpClient(interceptors: Array<Interceptor>, cache: Cache): OkHttpClient {
 
         val okHttpClient = OkHttpClient.Builder()
@@ -42,10 +45,23 @@ class NetworkingModule {
     }
 
     @Provides
+    @NamedOkHttpClient(ClientType.CACHE_OFF)
+    fun provideOkHtppClient(interceptors: Array<Interceptor>): OkHttpClient {
+        val okHttpClient = OkHttpClient.Builder()
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+
+        interceptors.forEach { okHttpClient.addInterceptor(it) }
+
+        return okHttpClient.build()
+    }
+
+    @Provides
     fun provideRetrofit(
-        okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory,
-        @NamedString(StringType.API_BASE_URL) baseUrl: String
+        @NamedOkHttpClient(ClientType.CACHE_OFF) okHttpClient: OkHttpClient,
+        @NamedString(StringType.API_BASE_URL) baseUrl: String,
+        converterFactory: Converter.Factory
     ): Retrofit {
 
         return Retrofit.Builder()
@@ -68,18 +84,14 @@ class NetworkingModule {
 
     @Provides
     fun provideInterceptors(context: Context, @NamedString(StringType.API_KEY) apiKey: String): Array<Interceptor> {
-        return arrayOf(
-            ApiKeyInterceptor(apiKey),
-            OnlineCacheInterceptor(),
-            OfflineCacheInterceptor(context)
-        )
+        return arrayOf(ApiKeyInterceptor(apiKey))
     }
 
     /**
      * offline network cache to use with picasso.
      */
     @Provides
-    fun provideOkhttpCache(context: Context): Cache {
+    fun provideOkHttpCache(context: Context): Cache {
         val httpCacheDirectory = File(context.cacheDir, "picasso-cache")
         return Cache(httpCacheDirectory, 50 * 1024 * 1024) //50 MB of Disk Cache
     }

@@ -9,10 +9,26 @@ import org.threeten.bp.Instant
 @Dao
 interface MovieEntityDao : BaseDao<MovieEntity> {
 
-    @Query("SELECT * FROM Movies WHERE category = 'upcoming' AND updatedAt > :updatedAfter AND updatedAt IS NOT NULL ORDER BY updatedAt ASC LIMIT :itemCount")
+    @Query(
+        """
+       SELECT * FROM Movies
+       WHERE category = 'upcoming'
+       AND updatedAt >= :updatedAfter
+       ORDER BY updatedAt ASC
+       LIMIT :itemCount
+    """
+    )
     fun getUpcomingMovies(updatedAfter: Instant, itemCount: Int): List<MovieEntity>
 
-    @Query("SELECT * FROM Movies WHERE category = 'trending' AND updatedAt > :updatedAfter AND updatedAt IS NOT NULL ORDER BY updatedAt ASC LIMIT :itemCount")
+    @Query(
+        """
+       SELECT * FROM Movies
+       WHERE category = 'trending'
+       AND updatedAt >= :updatedAfter
+       ORDER BY updatedAt ASC
+       LIMIT :itemCount
+    """
+    )
     fun getTrendingMovies(updatedAfter: Instant, itemCount: Int): List<MovieEntity>
 
     @Query("SELECT COUNT(*) FROM Movies")

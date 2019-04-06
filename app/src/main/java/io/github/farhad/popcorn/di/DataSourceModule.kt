@@ -1,5 +1,6 @@
 package io.github.farhad.popcorn.di
 
+import android.content.res.Resources
 import dagger.Module
 import dagger.Provides
 import io.github.farhad.popcorn.data.db.LocalDataSource
@@ -30,7 +31,8 @@ class DataSourceModule {
 
     @Provides
     @ApplicationScope
-    fun provideLocalDataSource(database: MovieDatabase): LocalDataSource = LocalDataSource(database)
+    fun provideLocalDataSource(database: MovieDatabase, resources: Resources): LocalDataSource =
+        LocalDataSource(database, resources)
 
     @Provides
     @ApplicationScope

@@ -37,7 +37,7 @@ class ImageModule {
 
     @ApplicationScope
     @Provides
-    fun provideOkHttpDownloader(okHttpClient: OkHttpClient): OkHttp3Downloader {
+    fun provideOkHttpDownloader(@NamedOkHttpClient(ClientType.CACHE_ON) okHttpClient: OkHttpClient): OkHttp3Downloader {
         return OkHttp3Downloader(okHttpClient)
     }
 

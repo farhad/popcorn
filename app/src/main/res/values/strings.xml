@@ -1,9 +1,18 @@
 <resources>
     <string name="app_name">Popcorn</string>
 
+    <!-- web urls and credentials-->
     <string name="api_base_url">https://api.themoviedb.org/</string>
     <string name="poster_base_url">https://image.tmdb.org/t/p/w342</string>
     <string name="backdrop_base_url">https://image.tmdb.org/t/p/w780</string>
     <string name="performer_role_base_url">https://image.tmdb.org/t/p/w200</string>
     <string name="api_key">4fa793e0dc95463d75d1288e5e6e6a32</string>
+
+    <!-- data retrieval errors-->
+    <string name="error_data_no_movies">Could not fetch movies data. Check your internet connection and try again!
+    </string>
+    <string name="error_data_no_movie_credits">Could not fetch credits data for this movie. Check your internet
+        connection and try again!
+    </string>
+    <string name="view_try_again">Try Again</string>
 </resources>
