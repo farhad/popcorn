@@ -2,6 +2,7 @@ package io.github.farhad.popcorn.data.repository
 
 import io.github.farhad.popcorn.data.db.LocalDataSource
 import io.github.farhad.popcorn.data.entity.Category
+import io.github.farhad.popcorn.data.entity.MovieEntity
 import io.github.farhad.popcorn.data.remote.RemoteDataSource
 import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.domain.model.Performer
@@ -18,81 +19,98 @@ class AppRepository @Inject constructor(
     private val transformer: EntityTransformer
 ) : Repository {
 
-    // initializing updatedAts to beginning of timestamp (1970-01-01)
-    private var lastTrendingUpdatedAt: Instant = Instant.ofEpochMilli(0)
-    private var lastUpcomingUpdatedAt: Instant = Instant.ofEpochMilli(0)
+    private var lastTrendingUpdatedAt: Instant
+    private var lastUpcomingUpdatedAt: Instant
+
+    init {
+        lastTrendingUpdatedAt = Instant.ofEpochMilli(0)
+        lastUpcomingUpdatedAt = Instant.ofEpochMilli(0)
+    }
 
     override fun getUpcomingMovies(paginationId: Any, pageSize: Int): Observable<List<Movie>> {
 
-//        val local = localDataSource.getUpcomingMovies(lastUpcomingUpdatedAt, pageSize, IOTransformer())
+        val local = localDataSource.getUpcomingMovies(lastUpcomingUpdatedAt, pageSize, IOTransformer()).doOnNext {
+            if (!it.isNullOrEmpty()) lastUpcomingUpdatedAt = it.last().updatedAt
+        }
 
-        val remote = remoteDataSource.getUpcomingMovies(paginationId as Int, IOTransformer())
-            .map { movieList ->
-                movieList.map { it.copy(category = Category.UPCOMING, updatedAt = Instant.now()) }
-                localDataSource.upsertUpcomingMovies(movieList)
-                lastUpcomingUpdatedAt = movieList.last().updatedAt
-                return@map movieList
+        val remote = remoteDataSource.getUpcomingMovies(paginationId as Int, IOTransformer()).doOnNext {
+            if (!it.isNullOrEmpty()) {
+                /**
+                 * replaced map with iterative loop, because the map executes parallel and many items share the same updatedAt
+                 * value and we lose the order of items when showing offline data from database
+                 */
+                val movies = mutableListOf<MovieEntity>()
+                for (i in 0 until it.size) {
+                    movies.add(
+                        it[i].copy(
+                            category = Category.UPCOMING,
+                            updatedAt = Instant.now().plusMillis(i.toLong())
+                        )
+                    )
+                }
+                localDataSource.upsertUpcomingMovies(movies).subscribe()
+                lastUpcomingUpdatedAt = it.last().updatedAt
             }
-            .compose(IOTransformer())
+        }
 
-        return remote
-            .compose(transformer.MovieTransformer())
+        return remote.onErrorResumeNext(local).compose(transformer.MovieTransformer())
     }
 
     override fun getTrendingMovies(paginationId: Any, pageSize: Int): Observable<List<Movie>> {
 
-        val local = localDataSource.getTrendingMovies(lastTrendingUpdatedAt, pageSize, IOTransformer())
+        val local = localDataSource.getTrendingMovies(lastTrendingUpdatedAt, pageSize, IOTransformer()).doOnNext {
+            if (!it.isNullOrEmpty()) lastTrendingUpdatedAt = it.last().updatedAt
+        }
 
-        val remote = remoteDataSource.getTrendingMovies(paginationId as Int, IOTransformer())
-
-        return local.flatMap {
-            if (it.isEmpty()) {
-                return@flatMap remote.doOnNext { movies ->
-                    movies?.map { item ->
-                        val newItem = item.copy(category = Category.TRENDING, updatedAt = Instant.now())
-                        localDataSource.upsertTrendingMovies(listOf(newItem))
-                        lastTrendingUpdatedAt = newItem.updatedAt
-
-                        return@map
-                    }
+        val remote = remoteDataSource.getTrendingMovies(paginationId as Int, IOTransformer()).doOnNext {
+            if (!it.isNullOrEmpty()) {
+                /**
+                 * replaced map with iterative loop, because the map executes parallel and many items share the same updatedAt
+                 * value and we lose the order of items when showing offline data from database
+                 */
+                val movies = mutableListOf<MovieEntity>()
+                for (i in 0 until it.size) {
+                    movies.add(
+                        it[i].copy(
+                            category = Category.TRENDING,
+                            updatedAt = Instant.now().plusMillis(i.toLong())
+                        )
+                    )
                 }
-            } else {
-                return@flatMap local
+
+                localDataSource.upsertTrendingMovies(movies).subscribe()
+                lastTrendingUpdatedAt = movies.last().updatedAt
             }
-        }.compose(transformer.MovieTransformer())
+        }
+
+        return remote.onErrorResumeNext(local).compose(transformer.MovieTransformer())
     }
 
     override fun getMovieCast(movieId: Int): Observable<List<Performer>> {
 
         val local = localDataSource.getMoviePerformers(movieId, IOTransformer())
 
-        val remote = remoteDataSource.getMoviePerformers(movieId, IOTransformer())
-            .map { performerList ->
-                performerList.map { it.copy(movieId = movieId) }
-                localDataSource.upsertMoviePerformers(performerList)
-                return@map performerList
+        val remote = remoteDataSource.getMoviePerformers(movieId, IOTransformer()).doOnNext {
+            if (it != null) {
+                val performers = it.map { item -> item.copy(movieId = movieId) }
+                localDataSource.upsertMoviePerformers(performers)
             }
-            .compose(IOTransformer())
+        }
 
-        return local.filter { it.isEmpty() }
-            .switchIfEmpty(remote)
-            .compose(transformer.PerformerTransformer())
+        return remote.onErrorResumeNext(local).compose(transformer.PerformerTransformer())
     }
 
     override fun getMovieCrew(movieId: Int): Observable<List<Role>> {
 
         val local = localDataSource.getMovieRoles(movieId, IOTransformer())
 
-        val remote = remoteDataSource.getMovieRoles(movieId, IOTransformer())
-            .map { roleList ->
-                roleList.map { it.copy(movieId = movieId) }
-                localDataSource.upsertMovieRoles(roleList)
-                return@map roleList
+        val remote = remoteDataSource.getMovieRoles(movieId, IOTransformer()).doOnNext {
+            if (it != null) {
+                val roles = it.map { item -> item.copy(movieId = movieId) }
+                localDataSource.upsertMovieRoles(roles)
             }
-            .compose(IOTransformer())
+        }
 
-        return local.filter { it.isEmpty() }
-            .switchIfEmpty(remote)
-            .compose(transformer.RoleTransformer())
+        return remote.onErrorResumeNext(local).compose(transformer.RoleTransformer())
     }
 }
