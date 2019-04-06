@@ -16,22 +16,39 @@ class TrendingMoviesViewModel @Inject constructor(val getTrendingMovies: GetTren
         viewState.value = TrendingMoviesState()
     }
 
+    private var paginationId: Int = 0
+
     fun getTrendingMovies() {
-        addDisposable(getTrendingMovies.execute(GetTrendingMovies.Params(pageSize = 20, paginationId = 1))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { movies ->
-                    viewState.value?.let {
-                        val newState = this.viewState.value?.copy(showLoading = false, movies = movies)
+        if (!this.viewState.value!!.showLoading) {
+            this.viewState.value = this.viewState.value?.copy(showLoading = true)
+
+            addDisposable(getTrendingMovies.execute(
+                GetTrendingMovies.Params(
+                    pageSize = pageSize,
+                    paginationId = paginationId + 1
+                )
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { movies ->
+                        viewState.value?.let {
+                            val newState = this.viewState.value?.copy(showLoading = false, movies = movies)
+                            this.viewState.value = newState
+                            this.errorState.value = null
+                            paginationId += 1
+                        }
+                    }, {
+                        val newState = this.viewState.value?.copy(showLoading = false)
                         this.viewState.value = newState
-                        this.errorState.value = null
-                    }
-                }, {
-                    val newState = this.viewState.value?.copy(showLoading = false)
-                    this.viewState.value = newState
-                    this.errorState.value = it
-                })
-        )
+                        this.errorState.value = it
+                    })
+            )
+        }
+    }
+
+
+    companion object {
+        const val pageSize = 20
     }
 }
