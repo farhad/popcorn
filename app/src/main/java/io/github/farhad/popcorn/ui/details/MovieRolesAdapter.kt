@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.farhad.popcorn.R
 import io.github.farhad.popcorn.domain.model.Role
 import io.github.farhad.popcorn.utils.ImageLoader
-import kotlinx.android.synthetic.main.item_performer_role.view.*
+import kotlinx.android.synthetic.main.item_performer_role.*
 
 
 class MovieRolesAdapter constructor(private val imageLoader: ImageLoader) :

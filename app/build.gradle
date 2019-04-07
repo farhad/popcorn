@@ -25,6 +25,11 @@ android {
         androidTest.java.srcDirs += "$projectDir/src/shared/java"
     }
 
+    androidExtensions {
+        experimental = true
+        defaultCacheImplementation = "HASH_MAP"
+    }
+
     buildTypes {
 
         debug {

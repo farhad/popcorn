@@ -22,7 +22,7 @@ class TrendingMoviesAdapter constructor(
         if (!list.any { it in movies }) {
             val oldSize = movies.size
             movies.addAll(list)
-            notifyItemRangeInserted(oldSize - 1, list.size)
+            notifyItemRangeInserted(oldSize, list.size) // using oldSize-1 makes the last item in the list animates
         }
     }
 
