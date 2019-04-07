@@ -19,6 +19,10 @@ class ImageLoader @Inject constructor(private val picasso: Picasso) {
             picasso.load(url).noFade().into(imageView)
     }
 
+    fun loadCircular(url: String, imageView: AppCompatImageView) {
+        picasso.load(url).transform(RoundedTransformation(1, 1)).into(imageView)
+    }
+
     private class FetchCallback(val delegate: (Boolean) -> Unit) : Callback {
         override fun onSuccess() {
             delegate(true)
