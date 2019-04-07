@@ -28,7 +28,7 @@
 
             android:layout_margin="16dp"
 
-            android:text="@string/view_try_again"
+            android:text="@string/title_try_again"
             android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
 
