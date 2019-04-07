@@ -98,8 +98,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_star"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
 
                 app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -108,7 +108,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
 
-                app:srcCompat="@drawable/star"
+                app:srcCompat="@drawable/ic_star"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

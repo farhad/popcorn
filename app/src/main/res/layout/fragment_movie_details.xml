@@ -67,6 +67,9 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintDimensionRatio="H,2:3"
 
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+
                     android:scaleType="centerCrop"
             />
 
@@ -79,18 +82,29 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
 
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_margin="8dp"
 
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="@color/colorTextPrimary"
                     android:gravity="start|center_vertical"
                     android:textStyle="bold"
                     android:ellipsize="end"
-                    android:maxLines="1"
+                    android:maxLines="2"
 
                     tools:text="sample movie"
+            />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image_date"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+
+                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
+                    app:layout_constraintBottom_toTopOf="@+id/image_votecount"
+
+                    android:layout_margin="8dp"
+
+                    app:srcCompat="@drawable/ic_date"
             />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -98,9 +112,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
-                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_title_movie"
+                    app:layout_constraintLeft_toRightOf="@+id/image_date"
                     app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/textview_votecount_movie"
 
                     android:textColor="@color/colorTextSecondary"
                     android:gravity="start|center_vertical"
@@ -108,11 +122,23 @@
                     android:ellipsize="end"
                     android:maxLines="1"
 
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_margin="8dp"
 
                     tools:text="sample movie"
+            />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image_votecount"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+
+                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
+                    app:layout_constraintBottom_toTopOf="@+id/image_voteaverage"
+
+                    android:layout_margin="8dp"
+                    android:padding="1dp"
+
+                    app:srcCompat="@drawable/ic_like"
             />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -120,8 +146,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
-                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_title_movie"
+                    app:layout_constraintLeft_toRightOf="@+id/image_votecount"
+                    app:layout_constraintBottom_toTopOf="@+id/textview_voteaverage_movie"
                     app:layout_constraintRight_toRightOf="parent"
 
                     android:textColor="@color/colorTextSecondary"
@@ -130,9 +156,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
 
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_margin="8dp"
 
                     tools:text="sample movie"
             />
@@ -142,7 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    app:layout_constraintLeft_toRightOf="@+id/image_star"
+                    app:layout_constraintLeft_toRightOf="@+id/image_voteaverage"
                     app:layout_constraintBottom_toBottomOf="parent"
 
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -150,26 +174,22 @@
                     android:gravity="start|center_vertical"
                     android:textStyle="bold"
 
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_margin="8dp"
 
                     tools:text="sample movie"
             />
 
             <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image_star"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:id="@+id/image_voteaverage"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
 
                     app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
                     app:layout_constraintBottom_toBottomOf="parent"
 
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_margin="8dp"
 
-                    app:srcCompat="@drawable/star"
+                    app:srcCompat="@drawable/ic_star"
             />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
