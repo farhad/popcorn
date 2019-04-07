@@ -2,8 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_height="match_parent"
         android:clipToPadding="false">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -56,10 +57,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
         >
             <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageview_movie_trending"
+                    android:id="@+id/imageview_movie_poster"
                     android:layout_width="100dp"
                     android:layout_height="0dp"
 
@@ -74,12 +74,12 @@
             />
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textview_title_movie"
+                    android:id="@+id/textview_movie_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
-                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_poster"
                     app:layout_constraintRight_toRightOf="parent"
 
                     android:layout_margin="8dp"
@@ -95,11 +95,11 @@
             />
 
             <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image_date"
+                    android:id="@+id/image_releasedate"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
 
-                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
+                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_poster"
                     app:layout_constraintBottom_toTopOf="@+id/image_votecount"
 
                     android:layout_margin="8dp"
@@ -108,13 +108,13 @@
             />
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textview_releasedate_movie"
+                    android:id="@+id/textview_movie_releasedate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
-                    app:layout_constraintLeft_toRightOf="@+id/image_date"
+                    app:layout_constraintLeft_toRightOf="@+id/image_releasedate"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/textview_votecount_movie"
+                    app:layout_constraintBottom_toTopOf="@+id/textview_movie_votecount"
 
                     android:textColor="@color/colorTextSecondary"
                     android:gravity="start|center_vertical"
@@ -132,7 +132,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
 
-                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
+                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_poster"
                     app:layout_constraintBottom_toTopOf="@+id/image_voteaverage"
 
                     android:layout_margin="8dp"
@@ -142,12 +142,12 @@
             />
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textview_votecount_movie"
+                    android:id="@+id/textview_movie_votecount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
                     app:layout_constraintLeft_toRightOf="@+id/image_votecount"
-                    app:layout_constraintBottom_toTopOf="@+id/textview_voteaverage_movie"
+                    app:layout_constraintBottom_toTopOf="@+id/textview_movie_voteaverage"
                     app:layout_constraintRight_toRightOf="parent"
 
                     android:textColor="@color/colorTextSecondary"
@@ -162,7 +162,7 @@
             />
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textview_voteaverage_movie"
+                    android:id="@+id/textview_movie_voteaverage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
@@ -184,7 +184,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
 
-                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_trending"
+                    app:layout_constraintLeft_toRightOf="@+id/imageview_movie_poster"
                     app:layout_constraintBottom_toBottomOf="parent"
 
                     android:layout_margin="8dp"
@@ -192,9 +192,31 @@
                     app:srcCompat="@drawable/ic_star"
             />
 
+            <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+
+                    app:layout_constraintTop_toBottomOf="@+id/textview_movie_voteaverage"
+            />
+
+            <include
+                    android:id=""
+                    layout="@layout/layout_movie_overview"
+
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+
+                    android:layout_marginTop="32dp"
+
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+
+            />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

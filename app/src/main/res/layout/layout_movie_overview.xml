@@ -3,37 +3,33 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/linear_loading"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="start">
 
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_clapperpad"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
 
-        android:gravity="center">
+            android:layout_margin="8dp"
 
-    <ProgressBar
-            android:id="@+id/progressbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_clapperboard"
     />
 
-    <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_try_again"
-            android:layout_width="wrap_content"
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textview_movie_overview"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_margin="16dp"
+            android:textColor="@color/colorTextPrimary"
+            android:gravity="start|center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
 
-            android:text="@string/view_try_again"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+            android:layout_margin="8dp"
 
-            android:visibility="gone"
-            tools:visibility="visible"
+            tools:text="sample movie"
     />
 
 </LinearLayout>
