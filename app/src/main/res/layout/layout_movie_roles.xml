@@ -6,7 +6,7 @@
         android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image_clapperpad"
+            android:id="@+id/image_crew"
             android:layout_width="24dp"
             android:layout_height="24dp"
 
@@ -15,7 +15,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
 
-            app:srcCompat="@drawable/ic_clapperboard"
+            app:srcCompat="@drawable/ic_crew"
     />
 
 
@@ -28,8 +28,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
 
-            app:layout_constraintLeft_toRightOf="@+id/image_clapperpad"
-            app:layout_constraintBottom_toBottomOf="@+id/image_clapperpad"
+            app:layout_constraintLeft_toRightOf="@+id/image_crew"
+            app:layout_constraintBottom_toBottomOf="@+id/image_crew"
 
 
             android:layout_marginStart="8dp"
@@ -39,11 +39,11 @@
     />
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_performers"
+            android:id="@+id/recyclerview_roles"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
-            app:layout_constraintTop_toBottomOf="@+id/image_clapperpad"
+            app:layout_constraintTop_toBottomOf="@+id/image_crew"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
 

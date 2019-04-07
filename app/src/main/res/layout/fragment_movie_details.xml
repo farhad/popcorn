@@ -83,7 +83,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraint_title_poster"
             />
 
-
             <include
                     android:id="@+id/constraint_performers"
                     layout="@layout/layout_movie_performers"
