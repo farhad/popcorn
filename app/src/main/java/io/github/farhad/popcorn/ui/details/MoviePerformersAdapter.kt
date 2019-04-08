@@ -1,5 +1,6 @@
 package io.github.farhad.popcorn.ui.details
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import io.github.farhad.popcorn.domain.model.Performer
 import io.github.farhad.popcorn.utils.ImageLoader
 import kotlinx.android.synthetic.main.item_performer_role.view.*
 
-class MoviePerformersAdapter constructor(private val imageLoader: ImageLoader) :
+class MoviePerformersAdapter(private val imageLoader: ImageLoader, private val resources: Resources) :
     RecyclerView.Adapter<MoviePerformersAdapter.ViewHolder>() {
 
     val performers: MutableList<Performer> = mutableListOf()
@@ -28,15 +29,15 @@ class MoviePerformersAdapter constructor(private val imageLoader: ImageLoader) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val performer = performers[holder.adapterPosition]
-        holder.bind(performer, imageLoader)
+        holder.bind(performer, imageLoader, resources)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(performer: Performer, imageLoader: ImageLoader) {
-//            performer.imageUrl?.let { imageLoader.loadCircular(it, imageview) }
-//            textview_name.text = performer.name
-//            textview_character.text = "as ${performer.character}"
+        fun bind(performer: Performer, imageLoader: ImageLoader, resources: Resources) = with(itemView) {
+            performer.imageUrl?.let { imageLoader.loadCircular(it, imageview) }
+            textview_name.text = performer.name
+            textview_character.text = resources.getString(R.string.cast_formatted, performer.character)
         }
     }
 

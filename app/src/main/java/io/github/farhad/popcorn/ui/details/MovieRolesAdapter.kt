@@ -1,5 +1,6 @@
 package io.github.farhad.popcorn.ui.details
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,10 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.farhad.popcorn.R
 import io.github.farhad.popcorn.domain.model.Role
 import io.github.farhad.popcorn.utils.ImageLoader
-import kotlinx.android.synthetic.main.item_performer_role.*
+import kotlinx.android.synthetic.main.item_performer_role.view.*
 
-
-class MovieRolesAdapter constructor(private val imageLoader: ImageLoader) :
+class MovieRolesAdapter constructor(private val imageLoader: ImageLoader, val resources: Resources) :
     RecyclerView.Adapter<MovieRolesAdapter.ViewHolder>() {
 
     val roles: MutableList<Role> = mutableListOf()
@@ -29,15 +29,15 @@ class MovieRolesAdapter constructor(private val imageLoader: ImageLoader) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val role = roles[holder.adapterPosition]
-        holder.bind(role, imageLoader)
+        holder.bind(role, imageLoader, resources)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(role: Role, imageLoader: ImageLoader) {
-//            role.imageUrl?.let { imageLoader.loadCircular(it, imageview_performer) }
-//            textview_performer_name.text = role.name
-//            textview_performer_character.text = "${role.department}-${role.job}"
+        fun bind(role: Role, imageLoader: ImageLoader, resources: Resources) = with(itemView) {
+            role.imageUrl?.let { imageLoader.loadCircular(it, imageview) }
+            textview_name.text = role.name
+            textview_character.text = resources.getString(R.string.crew_formatted, role.department, role.job)
         }
     }
 

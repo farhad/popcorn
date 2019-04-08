@@ -21,4 +21,8 @@
     <string name="title_overview">Overview</string>
     <string name="title_cast">Cast</string>
     <string name="title_crew">Crew</string>
+
+    <string name="cast_formatted">as %1$s</string>
+    <string name="crew_formatted">%1$s-%2$s</string>
+
 </resources>
