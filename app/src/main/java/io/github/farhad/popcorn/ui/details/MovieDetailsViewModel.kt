@@ -7,6 +7,11 @@ import io.github.farhad.popcorn.ui.common.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
+
+/**
+ * Todo : cast and crew come from the same endpoint, so it's better to merge them in one usecase and stream
+ *
+ */
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieCrew: GetMovieCrew,
     private val getMovieCast: GetMovieCast
@@ -26,36 +31,49 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun getMoviePerformers() {
 
-        addDisposable(
-            getMovieCast.execute(GetMovieCast.Params(movieId = viewState.value!!.movieId)).observeOn(
-                AndroidSchedulers.mainThread()
-            ).subscribe({
+        if(this.viewState.value?.showLoading == false) {
 
-                val newState = this.viewState.value?.copy(showLoading = false, performers = it)
-                this.viewState.value = newState
-                this.errorState.value = null
+            val state = this.viewState.value?.copy(showLoading = true)
+            this.viewState.value = state
 
-            }, {
-                val newState = this.viewState.value?.copy(showLoading = false)
-                this.viewState.value = newState
-                this.errorState.value = it
-            })
-        )
+            addDisposable(
+                getMovieCast.execute(GetMovieCast.Params(movieId = viewState.value!!.movieId)).observeOn(
+                    AndroidSchedulers.mainThread()
+                ).subscribe({
+
+                    val newState = this.viewState.value?.copy(showLoading = false, performers = it)
+                    this.viewState.value = newState
+                    this.errorState.value = null
+
+                }, {
+                    val newState = this.viewState.value?.copy(showLoading = false)
+                    this.viewState.value = newState
+                    this.errorState.value = it
+                })
+            )
+        }
     }
 
     fun getMovieRoles() {
-        addDisposable(
-            getMovieCrew.execute(GetMovieCrew.Params(movieId = viewState.value!!.movieId)).observeOn(
-                AndroidSchedulers.mainThread()
-            ).subscribe({
-                val newState = this.viewState.value?.copy(showLoading = false, roles = it)
-                this.viewState.value = newState
-                this.errorState.value = null
-            }, {
-                val newState = this.viewState.value?.copy(showLoading = false)
-                this.viewState.value = newState
-                this.errorState.value = it
-            })
-        )
+
+        if(this.viewState.value?.showLoading == false) {
+
+            val state = this.viewState.value?.copy(showLoading = true)
+            this.viewState.value = state
+
+            addDisposable(
+                getMovieCrew.execute(GetMovieCrew.Params(movieId = viewState.value!!.movieId)).observeOn(
+                    AndroidSchedulers.mainThread()
+                ).subscribe({
+                    val newState = this.viewState.value?.copy(showLoading = false, roles = it)
+                    this.viewState.value = newState
+                    this.errorState.value = null
+                }, {
+                    val newState = this.viewState.value?.copy(showLoading = false)
+                    this.viewState.value = newState
+                    this.errorState.value = it
+                })
+            )
+        }
     }
 }

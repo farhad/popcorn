@@ -56,6 +56,7 @@ ext {
     // Navigation
     navigation_version = "2.1.0-alpha01"
     navigation_fragment_ktx = "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    navigation_ui_ktx = "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
     // Reactive Extensions
     rxJava = "io.reactivex.rxjava2:rxjava:2.2.6"

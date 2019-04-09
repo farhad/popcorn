@@ -97,6 +97,7 @@ dependencies {
 
     // Navigation
     implementation configs.navigation_fragment_ktx
+    implementation configs.navigation_ui_ktx
 
     // Unit Testing
     testImplementation configs.junit

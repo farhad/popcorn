@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.farhad.popcorn.R
 import io.github.farhad.popcorn.di.Injectable
 import io.github.farhad.popcorn.utils.ImageLoader
+import io.github.farhad.popcorn.utils.show
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.layout_loading.*
 import kotlinx.android.synthetic.main.layout_movie_performers.*
@@ -54,6 +55,7 @@ class MovieDetailsFragment : Fragment(), Injectable {
 
         viewModel.viewState.observe(this, Observer { state ->
             handleViewState(state)
+
             if (state != null) state.performers?.let {
                 adapterPerformers.addItems(it)
             }
@@ -62,7 +64,10 @@ class MovieDetailsFragment : Fragment(), Injectable {
                 adapterRoles.addItems(it)
             }
 
+        })
 
+        viewModel.errorState.observe(this, Observer {
+            show(it.localizedMessage, constraint_details)
         })
     }
 
@@ -87,7 +92,14 @@ class MovieDetailsFragment : Fragment(), Injectable {
     }
 
     private fun handleViewState(state: MovieDetailsState) {
+        if (!state.showLoading) {
+            progressbar.visibility = View.GONE
+            button_try_again.visibility = View.GONE
 
+            if(state.performers!!.isEmpty() || state.roles!!.isEmpty()) {
+                button_try_again.visibility = View.VISIBLE
+            }
+        }
     }
 
 }
