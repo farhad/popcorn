@@ -1,6 +1,7 @@
 package io.github.farhad.popcorn.ui.details
 
 import androidx.lifecycle.MutableLiveData
+import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.domain.usecase.GetMovieCast
 import io.github.farhad.popcorn.domain.usecase.GetMovieCrew
 import io.github.farhad.popcorn.ui.common.BaseViewModel
@@ -24,20 +25,20 @@ class MovieDetailsViewModel @Inject constructor(
      * this is not the right approach,
      * the movieId should be provided with a custom ViewModelFactory!!
      */
-    fun setMovieId(movieId: Int) {
-        val newState = viewState.value?.copy(movieId = movieId)
+    fun setMovie(movie: Movie) {
+        val newState = viewState.value?.copy(movie = movie)
         viewState.value = newState
     }
 
     fun getMoviePerformers() {
 
-        if(this.viewState.value?.showLoading == false) {
+        if (this.viewState.value?.showLoading == false) {
 
             val state = this.viewState.value?.copy(showLoading = true)
             this.viewState.value = state
 
             addDisposable(
-                getMovieCast.execute(GetMovieCast.Params(movieId = viewState.value!!.movieId)).observeOn(
+                getMovieCast.execute(GetMovieCast.Params(movieId = viewState.value!!.movie.id)).observeOn(
                     AndroidSchedulers.mainThread()
                 ).subscribe({
 
@@ -56,13 +57,13 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun getMovieRoles() {
 
-        if(this.viewState.value?.showLoading == false) {
+        if (this.viewState.value?.showLoading == false) {
 
             val state = this.viewState.value?.copy(showLoading = true)
             this.viewState.value = state
 
             addDisposable(
-                getMovieCrew.execute(GetMovieCrew.Params(movieId = viewState.value!!.movieId)).observeOn(
+                getMovieCrew.execute(GetMovieCrew.Params(movieId = viewState.value!!.movie.id)).observeOn(
                     AndroidSchedulers.mainThread()
                 ).subscribe({
                     val newState = this.viewState.value?.copy(showLoading = false, roles = it)

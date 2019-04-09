@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_movie_trending.view.*
 
 class TrendingMoviesAdapter constructor(
     private val imageLoader: ImageLoader,
-    private val onMovieSelected: (Movie, View) -> Unit
+    private val onMovieSelected: (Movie) -> Unit
 ) :
     RecyclerView.Adapter<TrendingMoviesAdapter.ViewHolder>() {
 
@@ -40,13 +40,13 @@ class TrendingMoviesAdapter constructor(
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(movie: Movie, imageLoader: ImageLoader, listener: (Movie, View) -> Unit) = with(itemView) {
+        fun bind(movie: Movie, imageLoader: ImageLoader, listener: (Movie) -> Unit) = with(itemView) {
             textview_title_movie.text = movie.title
             textview_overview_movie.text = movie.overview
             textview_voteaverage_movie.text = movie.voteAverage.toString()
 
             movie.posterUrl?.let { imageLoader.load(it, imageview_movie_trending) }
-            setOnClickListener { listener(movie, itemView) }
+            setOnClickListener { listener(movie) }
         }
     }
 }

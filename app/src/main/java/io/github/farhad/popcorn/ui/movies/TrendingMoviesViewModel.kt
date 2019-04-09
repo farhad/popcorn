@@ -1,6 +1,7 @@
 package io.github.farhad.popcorn.ui.movies
 
 import androidx.lifecycle.MutableLiveData
+import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.domain.usecase.GetTrendingMovies
 import io.github.farhad.popcorn.ui.common.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,6 +46,11 @@ class TrendingMoviesViewModel @Inject constructor(val getTrendingMovies: GetTren
                     })
             )
         }
+    }
+
+    fun setSelectedMovie(movie: Movie) {
+        val newState = this.viewState.value?.copy(selectedMovie = movie)
+        this.viewState.value = newState
     }
 
 

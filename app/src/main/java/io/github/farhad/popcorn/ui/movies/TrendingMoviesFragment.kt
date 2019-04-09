@@ -36,7 +36,7 @@ class TrendingMoviesFragment : Fragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(TrendingMoviesViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(TrendingMoviesViewModel::class.java)
 
         initViews()
 
@@ -73,8 +73,8 @@ class TrendingMoviesFragment : Fragment(), Injectable {
 
         recyclerview_trending_movies.isNestedScrollingEnabled = false
         recyclerview_trending_movies.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        adapter = TrendingMoviesAdapter(imageLoader) { movie, view ->
-            // todo : implement! }
+        adapter = TrendingMoviesAdapter(imageLoader) { movie ->
+            viewModel.setSelectedMovie(movie)
         }
 
         recyclerview_trending_movies.addOnScrollListener(object : RecyclerView.OnScrollListener() {

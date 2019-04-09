@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.farhad.popcorn.R
 import io.github.farhad.popcorn.di.Injectable
+import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.utils.ImageLoader
 import io.github.farhad.popcorn.utils.show
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -33,6 +34,16 @@ class MovieDetailsFragment : Fragment(), Injectable {
     private lateinit var adapterPerformers: MoviePerformersAdapter
     private lateinit var adapterRoles: MovieRolesAdapter
 
+    private var movie: Movie? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            movie = it.getSerializable("movie") as Movie // todo : fix this
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_details, container, false)
     }
@@ -40,14 +51,14 @@ class MovieDetailsFragment : Fragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieDetailsViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(MovieDetailsViewModel::class.java)
 
         initView()
 
-        if (savedInstanceState == null) {
-            viewModel.getMoviePerformers()
-            viewModel.getMovieRoles()
-        }
+        viewModel.setMovie(checkNotNull(movie))
+
+        viewModel.getMoviePerformers()
+        viewModel.getMovieRoles()
     }
 
     override fun onResume() {
@@ -96,7 +107,7 @@ class MovieDetailsFragment : Fragment(), Injectable {
             progressbar.visibility = View.GONE
             button_try_again.visibility = View.GONE
 
-            if(state.performers!!.isEmpty() || state.roles!!.isEmpty()) {
+            if (state.performers!!.isEmpty() || state.roles!!.isEmpty()) {
                 button_try_again.visibility = View.VISIBLE
             }
         }
