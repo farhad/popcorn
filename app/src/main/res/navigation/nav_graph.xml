@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/nav_graph"
+            app:startDestination="@id/trendingmovies_dest">
+
+    <fragment
+            android:id="@+id/trendingmovies_dest"
+            android:name="io.github.farhad.popcorn.ui.movies.TrendingMoviesFragment"
+            android:label="TrendingMovies">
+
+    </fragment>
+
+    <fragment android:id="@+id/moviedetails_dest"
+              android:name="io.github.farhad.popcorn.ui.details.MovieDetailsFragment"
+              android:label="MovieDetails"/>
+</navigation>
