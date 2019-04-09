@@ -13,6 +13,8 @@
 
     <fragment android:id="@+id/moviedetails_dest"
               android:name="io.github.farhad.popcorn.ui.details.MovieDetailsFragment"
-              android:label="MovieDetails"/>
+              android:label="MovieDetails">
+        <argument android:name="movie" app:nullable="false" app:argType="" android:defaultValue="@null"/>
+    </fragment>
 
 </navigation>
