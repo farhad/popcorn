@@ -45,7 +45,7 @@ class EntityMapper @Inject constructor(
         performerEntity.movieId,
         performerEntity.name,
         performerEntity.order,
-        performerEntity.character,
-        performerRoleBaseUrl + performerEntity.imageUrl
+        performerRoleBaseUrl + performerEntity.imageUrl,
+        performerEntity.character
     )
 }

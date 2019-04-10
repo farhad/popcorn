@@ -2,6 +2,7 @@ package io.github.farhad.popcorn.ui.home
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +11,6 @@ import androidx.navigation.findNavController
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.github.farhad.popcorn.R
-import io.github.farhad.popcorn.ui.details.MovieDetailsFragmentArgs
 import io.github.farhad.popcorn.ui.movies.TrendingMoviesViewModel
 import javax.inject.Inject
 
@@ -27,10 +27,6 @@ class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         movieViewModel = ViewModelProviders.of(this, viewModelFactory).get(TrendingMoviesViewModel::class.java)
 
@@ -39,9 +35,9 @@ class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
             if (it.selectedMovieId != null) {
                 // navigate to details fragment
 
-                val args = MovieDetailsFragmentArgs(it.selectedMovieId!!)
+                val bundle = bundleOf("movieId" to it.selectedMovieId)
 
-//                findNavController(R.id.container).navigate(R.id.moviedetails_dest, args)
+                findNavController(R.id.container).navigate(R.id.moviedetails_dest, bundle)
             }
         })
     }

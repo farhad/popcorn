@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.farhad.popcorn.R
 import io.github.farhad.popcorn.di.Injectable
-import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.utils.ImageLoader
 import io.github.farhad.popcorn.utils.show
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -34,13 +33,13 @@ class MovieDetailsFragment : Fragment(), Injectable {
     private lateinit var adapterPerformers: MoviePerformersAdapter
     private lateinit var adapterRoles: MovieRolesAdapter
 
-    private var movie: Movie? = null
+    private var movieId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            movie = it.getSerializable("movie") as Movie // todo : fix this
+            movieId = it.getInt("movieId")
         }
     }
 
@@ -55,30 +54,33 @@ class MovieDetailsFragment : Fragment(), Injectable {
 
         initView()
 
-        viewModel.setMovie(checkNotNull(movie))
+        viewModel.setMovieId(checkNotNull(movieId))
 
         viewModel.getMoviePerformers()
-        viewModel.getMovieRoles()
     }
 
     override fun onResume() {
         super.onResume()
 
         viewModel.viewState.observe(this, Observer { state ->
-            handleViewState(state)
+            if (state != null) {
+                handleViewState(state)
 
-            if (state != null) state.performers?.let {
-                adapterPerformers.addItems(it)
-            }
+                state.performers?.let {
+                    adapterPerformers.addItems(it)
 
-            if (state != null) state.roles?.let {
-                adapterRoles.addItems(it)
+                }
+
+                state.roles?.let {
+                    adapterRoles.addItems(it)
+                }
             }
 
         })
 
         viewModel.errorState.observe(this, Observer {
-            show(it.localizedMessage, constraint_details)
+            if (it != null)
+                show(it.localizedMessage, constraint_details)
         })
     }
 
@@ -106,8 +108,9 @@ class MovieDetailsFragment : Fragment(), Injectable {
         if (!state.showLoading) {
             progressbar.visibility = View.GONE
             button_try_again.visibility = View.GONE
+            group_movie_details.visibility = View.VISIBLE
 
-            if (state.performers!!.isEmpty() || state.roles!!.isEmpty()) {
+            if (state.performers.isNullOrEmpty() || state.roles.isNullOrEmpty()) {
                 button_try_again.visibility = View.VISIBLE
             }
         }

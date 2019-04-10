@@ -1,7 +1,6 @@
 package io.github.farhad.popcorn.ui.details
 
 import androidx.lifecycle.MutableLiveData
-import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.domain.usecase.GetMovieCast
 import io.github.farhad.popcorn.domain.usecase.GetMovieCrew
 import io.github.farhad.popcorn.ui.common.BaseViewModel
@@ -25,34 +24,28 @@ class MovieDetailsViewModel @Inject constructor(
      * this is not the right approach,
      * the movieId should be provided with a custom ViewModelFactory!!
      */
-    fun setMovie(movie: Movie) {
-        val newState = viewState.value?.copy(movie = movie)
-        viewState.value = newState
+    fun setMovieId(movieId: Int) {
+        val newState = MovieDetailsState(movieId = movieId, showLoading = true)
+        this.viewState.value = newState
     }
 
     fun getMoviePerformers() {
 
-        if (this.viewState.value?.showLoading == false) {
+        addDisposable(
+            getMovieCast.execute(GetMovieCast.Params(movieId = viewState.value!!.movieId)).observeOn(
+                AndroidSchedulers.mainThread()
+            ).subscribe({
 
-            val state = this.viewState.value?.copy(showLoading = true)
-            this.viewState.value = state
+                val newState = this.viewState.value?.copy(showLoading = false, performers = it)
+                this.viewState.value = newState
+                this.errorState.value = null
 
-            addDisposable(
-                getMovieCast.execute(GetMovieCast.Params(movieId = viewState.value!!.movie.id)).observeOn(
-                    AndroidSchedulers.mainThread()
-                ).subscribe({
-
-                    val newState = this.viewState.value?.copy(showLoading = false, performers = it)
-                    this.viewState.value = newState
-                    this.errorState.value = null
-
-                }, {
-                    val newState = this.viewState.value?.copy(showLoading = false)
-                    this.viewState.value = newState
-                    this.errorState.value = it
-                })
-            )
-        }
+            }, {
+                val newState = this.viewState.value?.copy(showLoading = false)
+                this.viewState.value = newState
+                this.errorState.value = it
+            })
+        )
     }
 
     fun getMovieRoles() {
@@ -63,7 +56,7 @@ class MovieDetailsViewModel @Inject constructor(
             this.viewState.value = state
 
             addDisposable(
-                getMovieCrew.execute(GetMovieCrew.Params(movieId = viewState.value!!.movie.id)).observeOn(
+                getMovieCrew.execute(GetMovieCrew.Params(movieId = viewState.value!!.movieId)).observeOn(
                     AndroidSchedulers.mainThread()
                 ).subscribe({
                     val newState = this.viewState.value?.copy(showLoading = false, roles = it)

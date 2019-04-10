@@ -9,12 +9,21 @@
             android:name="io.github.farhad.popcorn.ui.movies.TrendingMoviesFragment"
             android:label="TrendingMovies">
 
+        <!--<action-->
+                <!--android:id="@+id/action_trending_movies_to_details"-->
+                <!--app:destination="@id/moviedetails_dest"-->
+                <!--app:popEnterAnim="@anim/slide_in_left"-->
+                <!--app:popExitAnim="@anim/slide_out_right"-->
+                <!--app:enterAnim="@anim/slide_in_right"-->
+                <!--app:exitAnim="@anim/slide_out_left"/>-->
+
     </fragment>
 
     <fragment android:id="@+id/moviedetails_dest"
               android:name="io.github.farhad.popcorn.ui.details.MovieDetailsFragment"
               android:label="MovieDetails">
-        <argument android:name="movieId" app:nullable="false" app:argType="Int" android:defaultValue="0" />
+
+        <argument android:name="movieId" app:nullable="false" app:argType="integer" android:defaultValue="0"/>
     </fragment>
 
 </navigation>
