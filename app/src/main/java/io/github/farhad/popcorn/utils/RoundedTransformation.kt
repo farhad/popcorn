@@ -14,7 +14,7 @@ class RoundedTransformation(
     }
 
     fun transform2(source: Bitmap): Bitmap {
-        val size = Math.min(source.getWidth(), source.getHeight())
+        val size = Math.min(source.width, source.height)
 
         val x = (source.width - size) / 2
         val y = (source.height - size) / 2
@@ -35,7 +35,7 @@ class RoundedTransformation(
         paint.shader = shader
         paint.isAntiAlias = true
 
-        val r = size / 2.5f
+        val r = size / 2f
         canvas.drawCircle(r, r, r, paint)
 
         squaredBitmap.recycle()

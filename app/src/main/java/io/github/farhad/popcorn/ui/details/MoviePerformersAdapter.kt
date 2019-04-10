@@ -35,7 +35,7 @@ class MoviePerformersAdapter(private val imageLoader: ImageLoader, private val r
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(performer: Performer, imageLoader: ImageLoader, resources: Resources) = with(itemView) {
-            performer.imageUrl?.let { imageLoader.loadCircular(it, imageview) }
+            performer.imageUrl?.let { imageLoader.loadCircular(it, imageview,R.drawable.ic_person) }
             textview_name.text = performer.name
             textview_character.text = resources.getString(R.string.cast_formatted, performer.character)
         }

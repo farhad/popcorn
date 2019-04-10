@@ -35,7 +35,7 @@ class MovieRolesAdapter constructor(private val imageLoader: ImageLoader, val re
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(role: Role, imageLoader: ImageLoader, resources: Resources) = with(itemView) {
-            role.imageUrl?.let { imageLoader.loadCircular(it, imageview) }
+            role.imageUrl?.let { imageLoader.loadCircular(it, imageview,R.drawable.ic_person) }
             textview_name.text = role.name
             textview_character.text = resources.getString(R.string.crew_formatted, role.department, role.job)
         }

@@ -1,6 +1,7 @@
 package io.github.farhad.popcorn.utils
 
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -19,8 +20,8 @@ class ImageLoader @Inject constructor(private val picasso: Picasso) {
             picasso.load(url).noFade().into(imageView)
     }
 
-    fun loadCircular(url: String, imageView: AppCompatImageView) {
-        picasso.load(url).transform(RoundedTransformation(30, 10)).into(imageView)
+    fun loadCircular(url: String, imageView: AppCompatImageView, @DrawableRes placeholder: Int) {
+        picasso.load(url).transform(RoundedTransformation(30, 10)).placeholder(placeholder).into(imageView)
     }
 
     private class FetchCallback(val delegate: (Boolean) -> Unit) : Callback {
