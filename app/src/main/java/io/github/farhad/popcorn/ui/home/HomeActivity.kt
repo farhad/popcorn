@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.github.farhad.popcorn.R
+import io.github.farhad.popcorn.ui.details.MovieDetailsFragmentArgs
 import io.github.farhad.popcorn.ui.movies.TrendingMoviesViewModel
 import javax.inject.Inject
 
@@ -34,8 +36,12 @@ class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         movieViewModel.viewState.observe(this, Observer {
 
-            if (it.selectedMovie != null) {
+            if (it.selectedMovieId != null) {
                 // navigate to details fragment
+
+                val args = MovieDetailsFragmentArgs(it.selectedMovieId!!)
+
+//                findNavController(R.id.container).navigate(R.id.moviedetails_dest, args)
             }
         })
     }

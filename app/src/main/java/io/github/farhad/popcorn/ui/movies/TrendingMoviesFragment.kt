@@ -74,7 +74,7 @@ class TrendingMoviesFragment : Fragment(), Injectable {
         recyclerview_trending_movies.isNestedScrollingEnabled = false
         recyclerview_trending_movies.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         adapter = TrendingMoviesAdapter(imageLoader) { movie ->
-            viewModel.setSelectedMovie(movie)
+            viewModel.setSelectedMovieId(movie.id)
         }
 
         recyclerview_trending_movies.addOnScrollListener(object : RecyclerView.OnScrollListener() {

@@ -14,7 +14,7 @@
     <fragment android:id="@+id/moviedetails_dest"
               android:name="io.github.farhad.popcorn.ui.details.MovieDetailsFragment"
               android:label="MovieDetails">
-        <argument android:name="movie" app:nullable="false" app:argType="" android:defaultValue="@null"/>
+        <argument android:name="movieId" app:nullable="false" app:argType="Int" android:defaultValue="0" />
     </fragment>
 
 </navigation>
