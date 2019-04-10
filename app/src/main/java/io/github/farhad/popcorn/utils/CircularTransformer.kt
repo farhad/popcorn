@@ -4,16 +4,9 @@ import android.graphics.*
 import com.squareup.picasso.Transformation
 
 
-class RoundedTransformation(
-    private val radius: Int,
-    private val margin: Int
-) : Transformation {
+class CircularTransformer : Transformation {
 
     override fun transform(source: Bitmap): Bitmap {
-        return transform2(source)
-    }
-
-    fun transform2(source: Bitmap): Bitmap {
         val size = Math.min(source.width, source.height)
 
         val x = (source.width - size) / 2

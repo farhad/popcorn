@@ -45,7 +45,7 @@ class TrendingMoviesAdapter constructor(
             textview_overview_movie.text = movie.overview
             textview_voteaverage_movie.text = movie.voteAverage.toString()
 
-            movie.posterUrl?.let { imageLoader.load(it, imageview_movie_trending) }
+            movie.posterUrl?.let { imageLoader.load(it, imageview_movie_trending,R.drawable.ic_film_roll) }
             setOnClickListener { listener(movie) }
         }
     }
