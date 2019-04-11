@@ -1,10 +1,12 @@
 package io.github.farhad.popcorn.ui.details
 
 import androidx.lifecycle.MutableLiveData
+import io.github.farhad.popcorn.domain.repository.Repository
 import io.github.farhad.popcorn.domain.usecase.GetMovieCast
 import io.github.farhad.popcorn.domain.usecase.GetMovieCrew
 import io.github.farhad.popcorn.ui.common.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
@@ -14,7 +16,8 @@ import javax.inject.Inject
  */
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieCrew: GetMovieCrew,
-    private val getMovieCast: GetMovieCast
+    private val getMovieCast: GetMovieCast,
+    private val repository: Repository
 ) : BaseViewModel() {
 
     var viewState: MutableLiveData<MovieDetailsState> = MutableLiveData()
@@ -25,8 +28,21 @@ class MovieDetailsViewModel @Inject constructor(
      * the movieId should be provided with a custom ViewModelFactory!!
      */
     fun setMovieId(movieId: Int) {
-        val newState = MovieDetailsState(movieId = movieId, showLoading = true)
-        this.viewState.value = newState
+        addDisposable(
+            repository.getMovieInfo(movieId).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).subscribe(
+                {
+                    val newState = MovieDetailsState(showLoading = true, movieId = movieId, movie = it)
+                    this.viewState.postValue(newState)
+                    this.errorState.postValue(null)
+
+                    getMoviePerformers()
+//            getMovieRoles()
+
+                },
+                {
+                    this.errorState.value = it
+                })
+        )
     }
 
     fun getMoviePerformers() {

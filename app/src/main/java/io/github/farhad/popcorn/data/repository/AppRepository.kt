@@ -11,6 +11,7 @@ import io.github.farhad.popcorn.domain.repository.Repository
 import io.github.farhad.popcorn.domain.transformer.IOTransformer
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import org.threeten.bp.Instant
 import javax.inject.Inject
 
@@ -116,6 +117,7 @@ class AppRepository @Inject constructor(
     }
 
     override fun getMovieInfo(movieId: Int): Single<Movie> {
-        return localDataSource.getMovie(movieId).map { transformer.mapper.toMovie(it) }
+        return localDataSource.getMovie(movieId).observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
+            .map { transformer.mapper.toMovie(it) }
     }
 }

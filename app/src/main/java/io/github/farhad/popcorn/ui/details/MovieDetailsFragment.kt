@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.farhad.popcorn.R
 import io.github.farhad.popcorn.di.Injectable
+import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.utils.ImageLoader
 import io.github.farhad.popcorn.utils.show
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.layout_loading.*
+import kotlinx.android.synthetic.main.layout_movie_overview.*
 import kotlinx.android.synthetic.main.layout_movie_performers.*
 import kotlinx.android.synthetic.main.layout_movie_roles.*
+import kotlinx.android.synthetic.main.layout_movie_title_and_votes.*
 import javax.inject.Inject
 
 class MovieDetailsFragment : Fragment(), Injectable {
@@ -55,8 +58,6 @@ class MovieDetailsFragment : Fragment(), Injectable {
         initView()
 
         viewModel.setMovieId(checkNotNull(movieId))
-
-        viewModel.getMoviePerformers()
     }
 
     override fun onResume() {
@@ -65,6 +66,10 @@ class MovieDetailsFragment : Fragment(), Injectable {
         viewModel.viewState.observe(this, Observer { state ->
             if (state != null) {
                 handleViewState(state)
+
+                state.movie?.let {
+                    showMovie(it)
+                }
 
                 state.performers?.let {
                     adapterPerformers.addItems(it)
@@ -102,6 +107,16 @@ class MovieDetailsFragment : Fragment(), Injectable {
         adapterRoles = MovieRolesAdapter(imageLoader, resources)
 
         recyclerview_roles.adapter = adapterRoles
+    }
+
+    private fun showMovie(movie: Movie) {
+        collapsing_toolbar_movie_details.visibility = View.VISIBLE
+        movie.backdropUrl?.let { imageLoader.load(it,imageview_movie_backdrop) }
+        textview_movie_title.text = movie.title
+        textview_movie_votecount.text = movie.voteCount.toString()
+        textview_movie_voteaverage.text = movie.voteAverage.toString()
+
+        textview_movie_overview.text = movie.overview
     }
 
     private fun handleViewState(state: MovieDetailsState) {
