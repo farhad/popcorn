@@ -83,7 +83,7 @@ class NetworkingModule {
     }
 
     @Provides
-    fun provideInterceptors(context: Context, @NamedString(StringType.API_KEY) apiKey: String): Array<Interceptor> {
+    fun provideInterceptors(@NamedString(StringType.API_KEY) apiKey: String): Array<Interceptor> {
         return arrayOf(ApiKeyInterceptor(apiKey))
     }
 

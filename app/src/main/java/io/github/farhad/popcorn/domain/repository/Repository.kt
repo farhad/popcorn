@@ -4,6 +4,7 @@ import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.domain.model.Performer
 import io.github.farhad.popcorn.domain.model.Role
 import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * This is the general contract for a movie repository.
@@ -23,4 +24,6 @@ interface Repository {
     fun getMovieCast(movieId: Int): Observable<List<Performer>>
 
     fun getMovieCrew(movieId: Int): Observable<List<Role>>
+
+    fun getMovieInfo(movieId: Int): Single<Movie>
 }

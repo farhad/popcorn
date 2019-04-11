@@ -39,4 +39,7 @@ interface MovieEntityDao : BaseDao<MovieEntity> {
 
     @Query("DELETE FROM Movies WHERE id=:id")
     fun delete(id: Int)
+
+    @Query("SELECT * FROM movies WHERE id = :movieId")
+    fun getMovie(movieId: Int): MovieEntity?
 }

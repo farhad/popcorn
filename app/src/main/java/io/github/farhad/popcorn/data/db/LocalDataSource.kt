@@ -8,6 +8,7 @@ import io.github.farhad.popcorn.data.entity.RoleEntity
 import io.github.farhad.popcorn.domain.transformer.Transformer
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import org.threeten.bp.Instant
 import javax.inject.Inject
 
@@ -109,5 +110,15 @@ class LocalDataSource @Inject constructor(
 
     fun upsertMovieRoles(roles: List<RoleEntity>) = Completable.fromAction {
         database.getRoleEntityDao().upsert(roles)
+    }
+
+    fun getMovie(movieId: Int): Single<MovieEntity?> {
+        return Single.create {
+            val movie = database.getMovieEntityDao().getMovie(movieId)
+            if (movie == null)
+                it.onError(IllegalArgumentException("movie not found"))
+            else
+                it.onSuccess(movie)
+        }
     }
 }
