@@ -77,7 +77,9 @@ class MovieDetailsFragment : Fragment(), Injectable {
 
         viewModel.rolesState.observe(activity!!, Observer { state -> state?.let { adapterRoles.addItems(it) } })
 
-        viewModel.setMovieId(checkNotNull(movieId))
+        viewModel.onNewMovieId(checkNotNull(movieId))
+        viewModel.getMoviePerformers()
+        viewModel.getMovieRoles()
     }
 
     private fun initView() {

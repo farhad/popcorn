@@ -28,17 +28,16 @@ class MovieDetailsViewModel @Inject constructor(
     var rolesState: MutableLiveData<List<Role>> = MutableLiveData()
     var loadingState: MutableLiveData<Boolean> = MutableLiveData()
     var errorState: MutableLiveData<Throwable> = MutableLiveData()
+    var movieId: Int = 0
 
-    fun setMovieId(movieId: Int) {
+    fun onNewMovieId(movieId: Int) {
+        this.movieId = movieId
         addDisposable(
             repository.getMovieInfo(movieId).subscribe(
                 {
                     if (it != null) {
                         loadingState.postValue(false)
                         movieState.postValue(it)
-
-                        getMoviePerformers()
-                        getMovieRoles()
 
                     } else {
                         this.errorState.postValue(IllegalArgumentException("movie not found"))
@@ -51,44 +50,42 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     fun getMoviePerformers() {
-        if (movieState.value != null) {
-            loadingState.postValue(true)
+        loadingState.postValue(true)
 
-            addDisposable(
-                getMovieCast.execute(GetMovieCast.Params(movieId = movieState.value!!.id))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        if (!it.isNullOrEmpty()) {
-                            loadingState.value = false
-                            performersState.value = it
-                        }
-
-                    }, {
+        addDisposable(
+            getMovieCast.execute(GetMovieCast.Params(movieId = movieId))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (!it.isNullOrEmpty()) {
                         loadingState.value = false
-                        errorState.value = it
-                    })
-            )
-        }
+                        performersState.postValue(it)
+                    }
+
+                }, {
+                    loadingState.value = false
+                    errorState.value = it
+                })
+        )
     }
 
     fun getMovieRoles() {
-        if (movieState.value != null && loadingState.value != true) {
-            loadingState.postValue(true)
+        loadingState.postValue(true)
 
-            addDisposable(
-                getMovieCrew.execute(GetMovieCrew.Params(movieId = movieState.value!!.id))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        if (!it.isNullOrEmpty()) {
-                            loadingState.value = false
-                            rolesState.value = it
-                        }
-
-                    }, {
+        addDisposable(
+            getMovieCrew.execute(GetMovieCrew.Params(movieId = movieId))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (!it.isNullOrEmpty()) {
                         loadingState.value = false
-                        errorState.value = it
-                    })
-            )
-        }
+                        rolesState.value = it
+                    } else {
+                        this.errorState.postValue(IllegalArgumentException("movie not found"))
+                    }
+
+                }, {
+                    loadingState.value = false
+                    errorState.value = it
+                })
+        )
     }
 }
