@@ -14,6 +14,8 @@ import io.github.farhad.popcorn.R
 import io.github.farhad.popcorn.di.Injectable
 import io.github.farhad.popcorn.domain.model.Movie
 import io.github.farhad.popcorn.utils.ImageLoader
+import io.github.farhad.popcorn.utils.formatDate
+import io.github.farhad.popcorn.utils.formatDigits
 import io.github.farhad.popcorn.utils.show
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.layout_loading.*
@@ -80,7 +82,6 @@ class MovieDetailsFragment : Fragment(), Injectable {
                     adapterRoles.addItems(it)
                 }
             }
-
         })
 
         viewModel.errorState.observe(this, Observer {
@@ -111,10 +112,11 @@ class MovieDetailsFragment : Fragment(), Injectable {
 
     private fun showMovie(movie: Movie) {
         collapsing_toolbar_movie_details.visibility = View.VISIBLE
-        movie.backdropUrl?.let { imageLoader.load(it,imageview_movie_backdrop) }
+        movie.backdropUrl?.let { imageLoader.load(it, imageview_movie_backdrop) }
         textview_movie_title.text = movie.title
-        textview_movie_votecount.text = movie.voteCount.toString()
+        movie.voteCount?.let { formatDigits(it) }
         textview_movie_voteaverage.text = movie.voteAverage.toString()
+        movie.releaseDate?.let { textview_movie_releasedate.text = formatDate(it) }
 
         textview_movie_overview.text = movie.overview
     }
@@ -126,7 +128,7 @@ class MovieDetailsFragment : Fragment(), Injectable {
             group_movie_details.visibility = View.VISIBLE
 
             if (state.performers.isNullOrEmpty() || state.roles.isNullOrEmpty()) {
-                button_try_again.visibility = View.VISIBLE
+//                button_try_again.visibility = View.VISIBLE
             }
         }
     }

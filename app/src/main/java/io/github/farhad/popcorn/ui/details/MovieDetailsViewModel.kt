@@ -6,7 +6,6 @@ import io.github.farhad.popcorn.domain.usecase.GetMovieCast
 import io.github.farhad.popcorn.domain.usecase.GetMovieCrew
 import io.github.farhad.popcorn.ui.common.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
@@ -29,15 +28,19 @@ class MovieDetailsViewModel @Inject constructor(
      */
     fun setMovieId(movieId: Int) {
         addDisposable(
-            repository.getMovieInfo(movieId).observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).subscribe(
+            repository.getMovieInfo(movieId).subscribe(
                 {
-                    val newState = MovieDetailsState(showLoading = true, movieId = movieId, movie = it)
-                    this.viewState.postValue(newState)
-                    this.errorState.postValue(null)
+                    if (it != null) {
 
-                    getMoviePerformers()
-//            getMovieRoles()
+                        val newState = MovieDetailsState(movieId = movieId, movie = it)
+                        this.viewState.postValue(newState)
+                        this.errorState.postValue(null)
 
+                        getMoviePerformers()
+
+                    } else {
+                        this.errorState.value = IllegalArgumentException("movie not found")
+                    }
                 },
                 {
                     this.errorState.value = it
@@ -47,21 +50,23 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun getMoviePerformers() {
 
-        addDisposable(
-            getMovieCast.execute(GetMovieCast.Params(movieId = viewState.value!!.movieId)).observeOn(
-                AndroidSchedulers.mainThread()
-            ).subscribe({
+        if(viewState.value != null) {
+            addDisposable(getMovieCast.execute(GetMovieCast.Params(movieId = viewState.value!!.movieId))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if(!it.isNullOrEmpty()) {
+                        val newState = this.viewState.value?.copy(showLoading = false, performers = it)
+                        this.viewState.value = newState
+                        this.errorState.value = null
+                    }
 
-                val newState = this.viewState.value?.copy(showLoading = false, performers = it)
-                this.viewState.value = newState
-                this.errorState.value = null
-
-            }, {
-                val newState = this.viewState.value?.copy(showLoading = false)
-                this.viewState.value = newState
-                this.errorState.value = it
-            })
-        )
+                }, {
+                    val newState = this.viewState.value?.copy(showLoading = false)
+                    this.viewState.value = newState
+                    this.errorState.value = it
+                })
+            )
+        }
     }
 
     fun getMovieRoles() {
