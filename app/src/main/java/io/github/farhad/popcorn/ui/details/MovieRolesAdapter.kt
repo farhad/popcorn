@@ -10,13 +10,13 @@ import io.github.farhad.popcorn.domain.model.Role
 import io.github.farhad.popcorn.utils.ImageLoader
 import kotlinx.android.synthetic.main.item_performer_role.view.*
 
-class MovieRolesAdapter constructor(private val imageLoader: ImageLoader, val resources: Resources) :
+class MovieRolesAdapter (private val imageLoader: ImageLoader, val resources: Resources) :
     RecyclerView.Adapter<MovieRolesAdapter.ViewHolder>() {
 
     val roles: MutableList<Role> = mutableListOf()
 
     fun addItems(list: List<Role>) {
-        if(list.any { it in roles }) {
+        if (list.any { it !in roles }) {
             roles.addAll(list)
             notifyItemRangeInserted(0, list.size)
         }
@@ -37,9 +37,9 @@ class MovieRolesAdapter constructor(private val imageLoader: ImageLoader, val re
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(role: Role, imageLoader: ImageLoader, resources: Resources) = with(itemView) {
-            role.imageUrl?.let { imageLoader.loadCircular(it, imageview,R.drawable.ic_person) }
+            role.imageUrl?.let { imageLoader.loadCircular(it, imageview, R.drawable.ic_person) }
             textview_name.text = role.name
-            textview_character.text = resources.getString(R.string.crew_formatted, role.department, role.job)
+            textview_character.text = role.job
         }
     }
 

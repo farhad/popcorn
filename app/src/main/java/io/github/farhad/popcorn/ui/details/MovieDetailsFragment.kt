@@ -58,36 +58,26 @@ class MovieDetailsFragment : Fragment(), Injectable {
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(MovieDetailsViewModel::class.java)
 
         initView()
-
-        viewModel.setMovieId(checkNotNull(movieId))
     }
 
     override fun onResume() {
         super.onResume()
 
-        viewModel.viewState.observe(this, Observer { state ->
-            if (state != null) {
-                handleViewState(state)
+        viewModel.movieState.observe(this, Observer { state -> state?.let { showMovie(it) } })
 
-                state.movie?.let {
-                    showMovie(it)
-                }
-
-                state.performers?.let {
-                    adapterPerformers.addItems(it)
-
-                }
-
-                state.roles?.let {
-                    adapterRoles.addItems(it)
-                }
-            }
+        viewModel.errorState.observe(this, Observer { error ->
+            error?.let { show(it.localizedMessage, constraint_details) }
         })
 
-        viewModel.errorState.observe(this, Observer {
-            if (it != null)
-                show(it.localizedMessage, constraint_details)
+        viewModel.loadingState.observe(this, Observer { state -> state?.let { handleViewState(it) } })
+
+        viewModel.performersState.observe(this, Observer { state ->
+            if(!state.isNullOrEmpty()) { adapterPerformers.addItems(state)}
         })
+
+        viewModel.rolesState.observe(activity!!, Observer { state -> state?.let { adapterRoles.addItems(it) } })
+
+        viewModel.setMovieId(checkNotNull(movieId))
     }
 
     private fun initView() {
@@ -121,15 +111,17 @@ class MovieDetailsFragment : Fragment(), Injectable {
         textview_movie_overview.text = movie.overview
     }
 
-    private fun handleViewState(state: MovieDetailsState) {
-        if (!state.showLoading) {
+    private fun handleViewState(state: Boolean) {
+        if (!state) {
             progressbar.visibility = View.GONE
             button_try_again.visibility = View.GONE
             group_movie_details.visibility = View.VISIBLE
+        }
 
-            if (state.performers.isNullOrEmpty() || state.roles.isNullOrEmpty()) {
-//                button_try_again.visibility = View.VISIBLE
-            }
+        else {
+            progressbar.visibility = View.VISIBLE
+            button_try_again.visibility = View.GONE
+            group_movie_details.visibility = View.GONE
         }
     }
 

@@ -1,6 +1,9 @@
 package io.github.farhad.popcorn.ui.details
 
 import androidx.lifecycle.MutableLiveData
+import io.github.farhad.popcorn.domain.model.Movie
+import io.github.farhad.popcorn.domain.model.Performer
+import io.github.farhad.popcorn.domain.model.Role
 import io.github.farhad.popcorn.domain.repository.Repository
 import io.github.farhad.popcorn.domain.usecase.GetMovieCast
 import io.github.farhad.popcorn.domain.usecase.GetMovieCrew
@@ -20,74 +23,71 @@ class MovieDetailsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     var viewState: MutableLiveData<MovieDetailsState> = MutableLiveData()
+    var movieState: MutableLiveData<Movie> = MutableLiveData()
+    var performersState: MutableLiveData<List<Performer>> = MutableLiveData()
+    var rolesState: MutableLiveData<List<Role>> = MutableLiveData()
+    var loadingState: MutableLiveData<Boolean> = MutableLiveData()
     var errorState: MutableLiveData<Throwable> = MutableLiveData()
 
-    /**
-     * this is not the right approach,
-     * the movieId should be provided with a custom ViewModelFactory!!
-     */
     fun setMovieId(movieId: Int) {
         addDisposable(
             repository.getMovieInfo(movieId).subscribe(
                 {
                     if (it != null) {
-
-                        val newState = MovieDetailsState(movieId = movieId, movie = it)
-                        this.viewState.postValue(newState)
-                        this.errorState.postValue(null)
+                        loadingState.postValue(false)
+                        movieState.postValue(it)
 
                         getMoviePerformers()
+                        getMovieRoles()
 
                     } else {
-                        this.errorState.value = IllegalArgumentException("movie not found")
+                        this.errorState.postValue(IllegalArgumentException("movie not found"))
                     }
                 },
                 {
-                    this.errorState.value = it
+                    this.errorState.postValue(it)
                 })
         )
     }
 
     fun getMoviePerformers() {
+        if (movieState.value != null) {
+            loadingState.postValue(true)
 
-        if(viewState.value != null) {
-            addDisposable(getMovieCast.execute(GetMovieCast.Params(movieId = viewState.value!!.movieId))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    if(!it.isNullOrEmpty()) {
-                        val newState = this.viewState.value?.copy(showLoading = false, performers = it)
-                        this.viewState.value = newState
-                        this.errorState.value = null
-                    }
+            addDisposable(
+                getMovieCast.execute(GetMovieCast.Params(movieId = movieState.value!!.id))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        if (!it.isNullOrEmpty()) {
+                            loadingState.value = false
+                            performersState.value = it
+                        }
 
-                }, {
-                    val newState = this.viewState.value?.copy(showLoading = false)
-                    this.viewState.value = newState
-                    this.errorState.value = it
-                })
+                    }, {
+                        loadingState.value = false
+                        errorState.value = it
+                    })
             )
         }
     }
 
     fun getMovieRoles() {
-
-        if (this.viewState.value?.showLoading == false) {
-
-            val state = this.viewState.value?.copy(showLoading = true)
-            this.viewState.value = state
+        if (movieState.value != null && loadingState.value != true) {
+            loadingState.postValue(true)
 
             addDisposable(
-                getMovieCrew.execute(GetMovieCrew.Params(movieId = viewState.value!!.movieId)).observeOn(
-                    AndroidSchedulers.mainThread()
-                ).subscribe({
-                    val newState = this.viewState.value?.copy(showLoading = false, roles = it)
-                    this.viewState.value = newState
-                    this.errorState.value = null
-                }, {
-                    val newState = this.viewState.value?.copy(showLoading = false)
-                    this.viewState.value = newState
-                    this.errorState.value = it
-                })
+                getMovieCrew.execute(GetMovieCrew.Params(movieId = movieState.value!!.id))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        if (!it.isNullOrEmpty()) {
+                            loadingState.value = false
+                            rolesState.value = it
+                        }
+
+                    }, {
+                        loadingState.value = false
+                        errorState.value = it
+                    })
             )
         }
     }
