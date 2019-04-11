@@ -585,16 +585,23 @@ class MovieDaoTest {
 
         Truth.assertThat(trendingMovies).isNotNull()
         Truth.assertThat(trendingMovies).isNotEmpty()
-        Truth.assertThat(trendingMovies.size).isEqualTo(1)
+        Truth.assertThat(trendingMovies.size).isEqualTo(2)
 
-        Truth.assertThat(trendingMovies[0].id).isEqualTo(3)
-        Truth.assertThat(trendingMovies[0].title).isEqualTo("trending movie 3")
+        Truth.assertThat(trendingMovies[0].id).isEqualTo(2)
+        Truth.assertThat(trendingMovies[0].title).isEqualTo("trending movie 2")
         Truth.assertThat(trendingMovies[0].category).isEqualTo(Category.TRENDING)
-        Truth.assertThat(trendingMovies[0].updatedAt).isGreaterThan(UPDATED_AFTER)
+        Truth.assertThat(trendingMovies[0].updatedAt).isEqualTo(UPDATED_AFTER)
+
+        Truth.assertThat(trendingMovies[1].id).isEqualTo(3)
+        Truth.assertThat(trendingMovies[1].title).isEqualTo("trending movie 3")
+        Truth.assertThat(trendingMovies[1].category).isEqualTo(Category.TRENDING)
+        Truth.assertThat(trendingMovies[1].updatedAt).isGreaterThan(UPDATED_AFTER)
+
+        Truth.assertThat(trendingMovies[0].updatedAt).isLessThan(trendingMovies[1].updatedAt)
     }
 
     @Test
-    fun movieDao_getTrendingMovies_updatedAt_filter_returns_items_after_specified_time_sorted_ascendingly() {
+    fun movieDao_getTrendingMovies_updatedAt_filter_returns_items_after_specified_time_sorted_descending() {
         // Arrange
         val past = UPDATED_AFTER.minusMillis(10)
         val next = UPDATED_AFTER.plusMillis(10)
@@ -632,13 +639,13 @@ class MovieDaoTest {
         Truth.assertThat(trendingMovies).isNotEmpty()
         Truth.assertThat(trendingMovies.size).isEqualTo(2)
 
-        Truth.assertThat(trendingMovies[0].id).isEqualTo(2)
-        Truth.assertThat(trendingMovies[0].title).isEqualTo("trending movie 2")
+        Truth.assertThat(trendingMovies[0].id).isEqualTo(1)
+        Truth.assertThat(trendingMovies[0].title).isEqualTo("trending movie 1")
         Truth.assertThat(trendingMovies[0].category).isEqualTo(Category.TRENDING)
-        Truth.assertThat(trendingMovies[0].updatedAt).isGreaterThan(past)
+        Truth.assertThat(trendingMovies[0].updatedAt).isEqualTo(past)
 
-        Truth.assertThat(trendingMovies[1].id).isEqualTo(3)
-        Truth.assertThat(trendingMovies[1].title).isEqualTo("trending movie 3")
+        Truth.assertThat(trendingMovies[1].id).isEqualTo(2)
+        Truth.assertThat(trendingMovies[1].title).isEqualTo("trending movie 2")
         Truth.assertThat(trendingMovies[1].category).isEqualTo(Category.TRENDING)
         Truth.assertThat(trendingMovies[1].updatedAt).isGreaterThan(past)
 
@@ -678,4 +685,45 @@ class MovieDaoTest {
         Truth.assertThat(trendingCount).isEqualTo(2)
         Truth.assertThat(upcomingCount).isEqualTo(1)
     }
+
+    @Test
+    fun movieDao_getMovie_returns_movie_row_for_existing_movieId() {
+        // Arrange
+        val upcomingMovieOne = MovieEntity.create(
+            id = 1,
+            title = "upcoming movie 1",
+            category = Category.UPCOMING
+        )
+
+        movieDao.insert(listOf(upcomingMovieOne))
+
+        // Act
+        val movie = movieDao.getMovie(upcomingMovieOne.id)
+
+        // Assert
+        Truth.assertThat(movieDao.count()).isEqualTo(1)
+
+        Truth.assertThat(movie).isNotNull()
+        Truth.assertThat(movie).isEqualTo(upcomingMovieOne)
+    }
+
+    @Test
+    fun movieDao_getMovie_returns_null_for_nonExistant_movieId() {
+        // Arrange
+        val upcomingMovieOne = MovieEntity.create(
+            id = 1,
+            title = "upcoming movie 1",
+            category = Category.UPCOMING
+        )
+
+        movieDao.insert(listOf(upcomingMovieOne))
+
+        // Act
+        val movie = movieDao.getMovie(NON_EXISTENT_MOVIE_ID)
+
+        // Assert
+        Truth.assertThat(movieDao.count()).isEqualTo(1)
+        Truth.assertThat(movie).isNull()
+    }
+
 }

@@ -10,6 +10,7 @@ import io.github.farhad.popcorn.domain.model.Role
 import io.github.farhad.popcorn.domain.repository.Repository
 import io.github.farhad.popcorn.domain.transformer.IOTransformer
 import io.reactivex.Observable
+import io.reactivex.Single
 import org.threeten.bp.Instant
 import javax.inject.Inject
 
@@ -112,5 +113,9 @@ class AppRepository @Inject constructor(
         }
 
         return remote.onErrorResumeNext(local).compose(transformer.RoleTransformer())
+    }
+
+    override fun getMovieInfo(movieId: Int): Single<Movie> {
+        return localDataSource.getMovie(movieId).map { transformer.mapper.toMovie(it) }
     }
 }

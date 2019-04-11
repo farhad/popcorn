@@ -1,21 +1,24 @@
 package io.github.farhad.popcorn.testing
 
+import android.content.Context
+import android.content.res.Resources
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import io.github.farhad.popcorn.R
 import io.github.farhad.popcorn.data.remote.api.ApiKeyInterceptor
 import io.github.farhad.popcorn.data.remote.api.ApiService
 import io.github.farhad.popcorn.data.remote.api.DateTypeConverter
-import io.github.farhad.popcorn.di.ApplicationScope
-import io.github.farhad.popcorn.di.NamedString
-import io.github.farhad.popcorn.di.StringType
+import io.github.farhad.popcorn.di.*
 import io.github.farhad.popcorn.remote.PlugAndPlayInterceptor
+import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -29,12 +32,27 @@ class TestNetworkingModule {
     }
 
     @Provides
-    fun provideOkHttpClient(interceptors: Array<Interceptor>): OkHttpClient {
+    @NamedOkHttpClient(ClientType.CACHE_ON)
+    fun provideOkHttpClient(interceptors: Array<Interceptor>, cache: Cache): OkHttpClient {
 
         val okHttpClient = OkHttpClient.Builder()
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .cache(cache)
+
+        interceptors.forEach { okHttpClient.addInterceptor(it) }
+
+        return okHttpClient.build()
+    }
+
+    @Provides
+    @NamedOkHttpClient(ClientType.CACHE_OFF)
+    fun provideOkHtppClient(interceptors: Array<Interceptor>): OkHttpClient {
+        val okHttpClient = OkHttpClient.Builder()
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
 
         interceptors.forEach { okHttpClient.addInterceptor(it) }
 
@@ -43,9 +61,9 @@ class TestNetworkingModule {
 
     @Provides
     fun provideRetrofit(
-        okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory,
-        @NamedString(StringType.API_BASE_URL) baseUrl: String
+        @NamedOkHttpClient(ClientType.CACHE_OFF) okHttpClient: OkHttpClient,
+        @NamedString(StringType.API_BASE_URL) baseUrl: String,
+        converterFactory: Converter.Factory
     ): Retrofit {
 
         return Retrofit.Builder()
@@ -71,8 +89,16 @@ class TestNetworkingModule {
         @NamedString(StringType.API_KEY) apiKey: String,
         plugAndPlayInterceptor: PlugAndPlayInterceptor
     ): Array<Interceptor> {
-
         return arrayOf(ApiKeyInterceptor(apiKey), plugAndPlayInterceptor)
+    }
+
+    /**
+     * offline network cache to use with picasso.
+     */
+    @Provides
+    fun provideOkHttpCache(context: Context): Cache {
+        val httpCacheDirectory = File(context.cacheDir, "picasso-cache")
+        return Cache(httpCacheDirectory, 50 * 1024 * 1024) //50 MB of Disk Cache
     }
 
     @Provides
@@ -83,9 +109,7 @@ class TestNetworkingModule {
 
     @Provides
     @NamedString(StringType.API_BASE_URL)
-    fun provideBaseUrl(): String {
-        return "https://api.themoviedb.org/"
-    }
+    fun provideBaseUrl(resources: Resources): String = resources.getString(R.string.api_base_url)
 
     @Provides
     @ApplicationScope
