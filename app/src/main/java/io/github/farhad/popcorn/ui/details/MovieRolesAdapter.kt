@@ -10,16 +10,18 @@ import io.github.farhad.popcorn.domain.model.Role
 import io.github.farhad.popcorn.utils.ImageLoader
 import kotlinx.android.synthetic.main.item_performer_role.view.*
 
-class MovieRolesAdapter (private val imageLoader: ImageLoader, val resources: Resources) :
+class MovieRolesAdapter(private val imageLoader: ImageLoader, val resources: Resources) :
     RecyclerView.Adapter<MovieRolesAdapter.ViewHolder>() {
 
     val roles: MutableList<Role> = mutableListOf()
 
     fun addItems(list: List<Role>) {
-        if (list.any { it !in roles }) {
-            roles.addAll(list)
-            notifyItemRangeInserted(0, list.size)
-        }
+        roles.addAll(list)
+        notifyItemRangeInserted(0, list.size)
+    }
+
+    fun clearItems() {
+        roles.clear()
     }
 
     override fun getItemCount(): Int = roles.size

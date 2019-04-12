@@ -16,10 +16,12 @@ class MoviePerformersAdapter(private val imageLoader: ImageLoader, private val r
     val performers: MutableList<Performer> = mutableListOf()
 
     fun addItems(list: List<Performer>) {
-        if(list.any { it !in performers }) {
-            performers.addAll(list)
-            notifyItemRangeInserted(0, list.size)
-        }
+        performers.addAll(list)
+        notifyItemRangeInserted(0, list.size)
+    }
+
+    fun clearItems() {
+        performers.clear()
     }
 
     override fun getItemCount(): Int = performers.size
@@ -37,7 +39,7 @@ class MoviePerformersAdapter(private val imageLoader: ImageLoader, private val r
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(performer: Performer, imageLoader: ImageLoader, resources: Resources) = with(itemView) {
-            performer.imageUrl?.let { imageLoader.loadCircular(it, imageview,R.drawable.ic_person) }
+            performer.imageUrl?.let { imageLoader.loadCircular(it, imageview, R.drawable.ic_person) }
             textview_name.text = performer.name
             textview_character.text = resources.getString(R.string.cast_formatted, performer.character)
         }

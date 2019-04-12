@@ -72,7 +72,9 @@ class MovieDetailsFragment : Fragment(), Injectable {
         viewModel.loadingState.observe(this, Observer { state -> state?.let { handleViewState(it) } })
 
         viewModel.performersState.observe(this, Observer { state ->
-            if(!state.isNullOrEmpty()) { adapterPerformers.addItems(state)}
+            if (!state.isNullOrEmpty()) {
+                adapterPerformers.addItems(state)
+            }
         })
 
         viewModel.rolesState.observe(activity!!, Observer { state -> state?.let { adapterRoles.addItems(it) } })
@@ -103,8 +105,13 @@ class MovieDetailsFragment : Fragment(), Injectable {
     }
 
     private fun showMovie(movie: Movie) {
-        collapsing_toolbar_movie_details.visibility = View.VISIBLE
-        movie.backdropUrl?.let { imageLoader.load(it, imageview_movie_backdrop) }
+
+        movie.backdropUrl?.let {
+            imageLoader.load(it, imageview_movie_backdrop)
+            collapsing_toolbar_movie_details.visibility = View.VISIBLE
+            imageview_movie_backdrop.visibility = View.VISIBLE
+        }
+        movie.posterUrl?.let { imageLoader.load(it, imageview_movie_poster) }
         textview_movie_title.text = movie.title
         movie.voteCount?.let { formatDigits(it) }
         textview_movie_voteaverage.text = movie.voteAverage.toString()
@@ -118,13 +125,18 @@ class MovieDetailsFragment : Fragment(), Injectable {
             progressbar.visibility = View.GONE
             button_try_again.visibility = View.GONE
             group_movie_details.visibility = View.VISIBLE
-        }
-
-        else {
+        } else {
             progressbar.visibility = View.VISIBLE
             button_try_again.visibility = View.GONE
             group_movie_details.visibility = View.GONE
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        adapterPerformers.clearItems()
+        adapterRoles.clearItems()
     }
 
 }
