@@ -16,12 +16,14 @@ class MovieRolesAdapter(private val imageLoader: ImageLoader, val resources: Res
     val roles: MutableList<Role> = mutableListOf()
 
     fun addItems(list: List<Role>) {
-        roles.addAll(list)
-        notifyItemRangeInserted(0, list.size)
-    }
-
-    fun clearItems() {
-        roles.clear()
+        list.map {
+            if (!roles.contains(it)) {
+                val pos = roles.size
+                roles.add(it)
+                notifyItemRangeInserted(pos, 1)
+            }
+            return@map
+        }
     }
 
     override fun getItemCount(): Int = roles.size

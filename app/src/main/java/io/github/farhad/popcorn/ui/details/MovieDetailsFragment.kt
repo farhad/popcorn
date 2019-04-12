@@ -58,18 +58,18 @@ class MovieDetailsFragment : Fragment(), Injectable {
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(MovieDetailsViewModel::class.java)
 
         initView()
+
+        startObservations()
     }
 
-    override fun onResume() {
-        super.onResume()
-
+    private fun startObservations() {
         viewModel.movieState.observe(this, Observer { state -> state?.let { showMovie(it) } })
 
         viewModel.errorState.observe(this, Observer { error ->
             error?.let { show(it.localizedMessage, constraint_details) }
         })
 
-        viewModel.loadingState.observe(this, Observer { state -> state?.let { handleViewState(it) } })
+        viewModel.loadingState.observe(this, Observer { state -> state?.let { handleLoadingState(it) } })
 
         viewModel.performersState.observe(this, Observer { state ->
             if (!state.isNullOrEmpty()) {
@@ -120,7 +120,7 @@ class MovieDetailsFragment : Fragment(), Injectable {
         textview_movie_overview.text = movie.overview
     }
 
-    private fun handleViewState(state: Boolean) {
+    private fun handleLoadingState(state: Boolean) {
         if (!state) {
             progressbar.visibility = View.GONE
             button_try_again.visibility = View.GONE
@@ -131,12 +131,4 @@ class MovieDetailsFragment : Fragment(), Injectable {
             group_movie_details.visibility = View.GONE
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        adapterPerformers.clearItems()
-        adapterRoles.clearItems()
-    }
-
 }

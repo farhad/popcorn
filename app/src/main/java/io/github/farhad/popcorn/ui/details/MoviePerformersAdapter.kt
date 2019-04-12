@@ -16,12 +16,14 @@ class MoviePerformersAdapter(private val imageLoader: ImageLoader, private val r
     val performers: MutableList<Performer> = mutableListOf()
 
     fun addItems(list: List<Performer>) {
-        performers.addAll(list)
-        notifyItemRangeInserted(0, list.size)
-    }
-
-    fun clearItems() {
-        performers.clear()
+        list.map {
+            if (!performers.contains(it)) {
+                val pos = performers.size
+                performers.add(it)
+                notifyItemRangeInserted(pos, 1)
+            }
+            return@map
+        }
     }
 
     override fun getItemCount(): Int = performers.size
