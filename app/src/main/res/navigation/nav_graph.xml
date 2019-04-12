@@ -15,7 +15,7 @@
                 app:popUpTo="@+id/trendingmovies_dest"
 
                 app:popUpToInclusive="false"
-                app:launchSingleTop="true"
+                app:launchSingleTop="false"
 
                 app:enterAnim="@anim/nav_default_exit_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"

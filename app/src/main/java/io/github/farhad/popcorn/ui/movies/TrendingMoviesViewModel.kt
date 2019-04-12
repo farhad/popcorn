@@ -47,7 +47,7 @@ class TrendingMoviesViewModel @Inject constructor(val getTrendingMovies: GetTren
         }
     }
 
-    fun setSelectedMovieId(movieId: Int) {
+    fun setSelectedMovieId(movieId: Int?) {
         val newState = this.viewState.value?.copy(selectedMovieId = movieId)
         this.viewState.value = newState
     }

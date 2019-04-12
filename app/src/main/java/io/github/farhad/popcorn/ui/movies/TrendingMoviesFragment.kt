@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -105,5 +103,11 @@ class TrendingMoviesFragment : Fragment(), Injectable {
             button_try_again.visibility = View.GONE
             progressbar.visibility = View.GONE
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        viewModel.setSelectedMovieId(null)
     }
 }
