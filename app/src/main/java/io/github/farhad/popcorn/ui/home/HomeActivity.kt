@@ -37,7 +37,7 @@ class HomeActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
                 val bundle = bundleOf("movieId" to it.selectedMovieId)
 
-                findNavController(R.id.container).navigate(R.id.moviedetails_dest, bundle)
+                findNavController(R.id.container).navigate(R.id.action_navigate_to_moviedetails, bundle)
             }
         })
     }
